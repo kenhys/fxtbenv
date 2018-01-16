@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
+	"github.com/hashicorp/go-getter"
 	"github.com/urfave/cli"
 	"os"
 	"path/filepath"
-	"github.com/hashicorp/go-getter"
 	"strings"
 )
 
@@ -15,7 +15,7 @@ func NewFxTbEnv() {
 	envDir := filepath.Join(homeDir, ".fxtbenv")
 	products := []string{"firefox", "thunderbird"}
 	for _, product := range products {
-		entries := []string {"versions", "profiles"}
+		entries := []string{"versions", "profiles"}
 		productDir := filepath.Join(envDir, product)
 		for _, entry := range entries {
 			entryDir := filepath.Join(productDir, entry)
@@ -31,7 +31,7 @@ func InstallAutoconfigJsFile(installDir string) {
 	if err != nil {
 		return
 	}
-	contents := []string {
+	contents := []string{
 		"pref(\"general.config.filename\", \"autoconfig.cfg\");",
 		"pref(\"general.config.vendor\", \"autoconfig\");",
 		"pref(\"general.config.obscure_value\", 0);",
