@@ -24,6 +24,20 @@ func NewFxTbEnv() {
 	}
 }
 
+func InstallAutoconfigJsFile(installDir string) {
+	jsPath := fmt.Sprintf("%s/defaults/pref/autoconfig.js", installDir)
+	file, err := os.OpenFile(jsPath, os.O_RDWR|os.O_CREATE, 0600)
+	if err != nil {
+		return
+	}
+	contents := []string {
+		"pref(\"general.config.filename\", \"autoconfig.cfg\");",
+		"pref(\"general.config.vendor\", \"autoconfig\");",
+		"pref(\"general.config.obscure_value\", 0);",
+	}
+	file.WriteString(strings.Join(contents, "\r\n"))
+}
+
 func InstallFirefox(version string) {
 	base_url := "https://ftp.mozilla.org/pub/firefox/releases"
 	filename := fmt.Sprintf("firefox-%s.tar.bz2", version)
