@@ -79,6 +79,9 @@ func InstallFirefox(version string) {
 	homeDir := os.ExpandEnv(`${HOME}`)
 	fxDir := fmt.Sprintf("%s/.fxtbenv/firefox/versions/%s", homeDir, version)
 	os.Rename("tmp/firefox", fxDir)
+
+	InstallAutoconfigJsFile(fxDir)
+	InstallAutoconfigCfgFile(fxDir)
 }
 
 func main() {
