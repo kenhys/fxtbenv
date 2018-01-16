@@ -15,6 +15,18 @@ func GetFxTbHomeDirectory() string {
 	return envDir
 }
 
+func IsInitialized() bool {
+	homeDir := GetFxTbHomeDirectory()
+	stat, err := os.Stat(homeDir)
+	if err != nil {
+		return false
+	}
+	if !stat.IsDir() {
+		return false
+	}
+	return true
+}
+
 func NewFxTbEnv() {
 	homeDir := os.ExpandEnv(`${HOME}`)
 
