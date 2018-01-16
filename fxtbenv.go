@@ -9,6 +9,12 @@ import (
 	"strings"
 )
 
+func GetFxTbHomeDirectory() string {
+	homeDir := os.ExpandEnv(`${HOME}`)
+	envDir := filepath.Join(homeDir, ".fxtbenv")
+	return envDir
+}
+
 func NewFxTbEnv() {
 	homeDir := os.ExpandEnv(`${HOME}`)
 
