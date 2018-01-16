@@ -117,6 +117,9 @@ func main() {
 					Name:    "firefox",
 					Aliases: []string{"fx"},
 					Usage:   "Install Firefox",
+					Flags: []cli.Flag{
+						cli.BoolFlag{Name: "list, l"},
+					},
 					Action: func(c *cli.Context) error {
 						if !IsInitialized() {
 							NewFxTbEnv()
@@ -130,6 +133,9 @@ func main() {
 					Name:    "thunderbird",
 					Aliases: []string{"tb"},
 					Usage:   "Install Thunderbird",
+					Flags: []cli.Flag{
+						cli.BoolFlag{Name: "list, l"},
+					},
 					Action: func(c *cli.Context) error {
 						if !IsInitialized() {
 							NewFxTbEnv()
