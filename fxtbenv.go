@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"github.com/hashicorp/go-getter"
+	"strings"
 )
 
 func NewFxTbEnv() {
@@ -34,6 +35,23 @@ func InstallAutoconfigJsFile(installDir string) {
 		"pref(\"general.config.filename\", \"autoconfig.cfg\");",
 		"pref(\"general.config.vendor\", \"autoconfig\");",
 		"pref(\"general.config.obscure_value\", 0);",
+	}
+	file.WriteString(strings.Join(contents, "\r\n"))
+}
+
+func InstallAutoconfigCfgFile(installDir string) {
+	cfgPath := fmt.Sprintf("%s/autoconfig.cfg", installDir)
+	contents := []string{
+		"// Disable auto update feature",
+		"lockPref('app.update.auto', false);",
+		"lockPref('app.update.enabled', false);",
+		"lockPref('app.update.url', '');",
+		"lockPref('app.update.url.override', '');",
+		"lockPref('browser.search.update', false);",
+	}
+	file, err := os.OpenFile(cfgPath, os.O_RDWR|os.O_CREATE, 0600)
+	if err != nil {
+		return
 	}
 	file.WriteString(strings.Join(contents, "\r\n"))
 }
