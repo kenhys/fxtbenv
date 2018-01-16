@@ -116,7 +116,9 @@ func main() {
 					Aliases: []string{"fx"},
 					Usage:   "Install Firefox",
 					Action: func(c *cli.Context) error {
-						NewFxTbEnv()
+						if !IsInitialized() {
+							NewFxTbEnv()
+						}
 						InstallFirefox(c.Args().First())
 						fmt.Println("install fx:", c.Args().First())
 						return nil
@@ -127,7 +129,9 @@ func main() {
 					Aliases: []string{"tb"},
 					Usage:   "Install Thunderbird",
 					Action: func(c *cli.Context) error {
-						NewFxTbEnv()
+						if !IsInitialized() {
+							NewFxTbEnv()
+						}
 						fmt.Println("fxtb install tb:", c.Args().First())
 						return nil
 					},
