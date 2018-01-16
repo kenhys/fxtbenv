@@ -134,6 +134,9 @@ func main() {
 						cli.BoolFlag{Name: "list, l"},
 					},
 					Action: func(c *cli.Context) error {
+						if c.Bool("list") {
+							GetProductVersions("firefox")
+						}
 						if c.NArg() == 0 {
 							fmt.Println(fmt.Errorf("Specify Firefox version for install firefox subcommand:"))
 							os.Exit(1)
