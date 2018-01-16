@@ -105,6 +105,7 @@ func InstallFirefox(version string) {
 func main() {
 	app := cli.NewApp()
 	app.EnableBashCompletion = true
+	app.Usage = "Install multiple Firefox/Thunderbird and switch them."
 	app.Version = "0.1.0"
 	app.Commands = []cli.Command{
 		{
