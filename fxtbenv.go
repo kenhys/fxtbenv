@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"github.com/hashicorp/go-getter"
 	"github.com/urfave/cli"
+	"io/ioutil"
+	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
@@ -25,6 +27,17 @@ func IsInitialized() bool {
 		return false
 	}
 	return true
+}
+
+func GetProductVersions(product string) []string {
+	url := fmt.Sprintf("https://ftp.mozilla.org/pub/%s/releases/", product)
+
+	response, _ := http.Get(url)
+	defer response.Body.Close()
+
+	html, _ := ioutil.ReadAll(response.Body)
+	fmt.Println(string(html))
+	return nil
 }
 
 func NewFxTbEnv() {
