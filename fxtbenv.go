@@ -8,6 +8,8 @@ import (
 	"path/filepath"
 	"strings"
 	"github.com/PuerkitoBio/goquery"
+	version "github.com/hashicorp/go-version"
+	"sort"
 )
 
 func GetFxTbHomeDirectory() string {
@@ -62,6 +64,16 @@ func GetProductVersions(product string) []string {
 			branches[key] = append(branches[key], label)
 		}
 	})
+	keys := []string{}
+	for key, _ := range branches {
+		keys = append(keys, key)
+	}
+	keyVersions := GetSortedLabelVersions(keys)
+
+	for _, key := range keyVersions {
+		versions := GetSortedLabelVersions(branches[key])
+		fmt.Println(versions)
+	}
 	return nil
 }
 
@@ -183,6 +195,9 @@ func main() {
 						cli.BoolFlag{Name: "list, l"},
 					},
 					Action: func(c *cli.Context) error {
+						if c.Bool("list") {
+							GetProductVersions("thunderbird")
+						}
 						if !IsInitialized() {
 							NewFxTbEnv()
 						}
