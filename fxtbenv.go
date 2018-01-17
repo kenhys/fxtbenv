@@ -28,6 +28,25 @@ func IsInitialized() bool {
 	return true
 }
 
+func GetSortedLabelVersions(labels []string) []string {
+	versions := make([]*version.Version, len(labels))
+	for i, ver := range labels {
+		v, _ := version.NewVersion(ver)
+		versions[i] = v
+	}
+	sort.Sort(version.Collection(versions))
+	sorted := make([]string, len(labels))
+	for i, v := range versions {
+		for _, label := range labels {
+			v2, _ := version.NewVersion(label)
+			if v.Equal(v2) {
+				sorted[i] = label
+			}
+		}
+	}
+	return sorted
+}
+
 func GetProductVersions(product string) []string {
 	url := fmt.Sprintf("https://ftp.mozilla.org/pub/%s/releases/", product)
 
