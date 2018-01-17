@@ -87,12 +87,13 @@ func InstallAutoconfigCfgFile(installDir string) {
 	file.WriteString(strings.Join(contents, "\r\n"))
 }
 
-func InstallFirefox(version string) {
-	base_url := "https://ftp.mozilla.org/pub/firefox/releases"
-	filename := fmt.Sprintf("firefox-%s.tar.bz2", version)
+func InstallProduct(product string, version string) {
+	base_url := fmt.Sprintf("https://ftp.mozilla.org/pub/%s/releases", product)
+	//base_url := fmt.Sprintf("http://localhost/pub/%s/releases", product)
+	filename := fmt.Sprintf("%s-%s.tar.bz2", product, version)
 
 	fmt.Println(filename)
-	source := fmt.Sprintf("%s/%s/linux-x86_64/ja/firefox-%s.tar.bz2", base_url, version, version)
+	source := fmt.Sprintf("%s/%s/linux-x86_64/ja/%s-%s.tar.bz2", base_url, version, product, version)
 	fmt.Println(source)
 	pwd, _ := os.Getwd()
 	client := &getter.Client{
@@ -108,11 +109,11 @@ func InstallFirefox(version string) {
 	}
 
 	homeDir := os.ExpandEnv(`${HOME}`)
-	fxDir := fmt.Sprintf("%s/.fxtbenv/firefox/versions/%s", homeDir, version)
-	os.Rename("tmp/firefox", fxDir)
+	productDir := fmt.Sprintf("%s/.fxtbenv/%s/versions/%s", homeDir, product, version)
+	os.Rename(fmt.Sprintf("tmp/%s", product), productDir)
 
-	InstallAutoconfigJsFile(fxDir)
-	InstallAutoconfigCfgFile(fxDir)
+	InstallAutoconfigJsFile(productDir)
+	InstallAutoconfigCfgFile(productDir)
 }
 
 func main() {
@@ -144,7 +145,7 @@ func main() {
 						if !IsInitialized() {
 							NewFxTbEnv()
 						}
-						InstallFirefox(c.Args().First())
+						InstallProduct("firefox", c.Args().First())
 						fmt.Println("install fx:", c.Args().First())
 						return nil
 					},
@@ -160,6 +161,7 @@ func main() {
 						if !IsInitialized() {
 							NewFxTbEnv()
 						}
+						InstallProduct("thunderbird", c.Args().First())
 						fmt.Println("fxtb install tb:", c.Args().First())
 						return nil
 					},
