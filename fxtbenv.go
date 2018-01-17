@@ -198,6 +198,10 @@ func main() {
 						if c.Bool("list") {
 							GetProductVersions("thunderbird")
 						}
+						if c.NArg() == 0 {
+							fmt.Println(fmt.Errorf("Specify Thunderbird version"))
+							os.Exit(1)
+						}
 						if !IsInitialized() {
 							NewFxTbEnv()
 						}
