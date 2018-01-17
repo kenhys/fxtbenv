@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"github.com/hashicorp/go-getter"
 	"github.com/urfave/cli"
-	"io/ioutil"
-	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
