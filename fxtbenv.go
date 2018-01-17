@@ -9,6 +9,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"github.com/PuerkitoBio/goquery"
 )
 
 func GetFxTbHomeDirectory() string {
@@ -32,11 +33,18 @@ func IsInitialized() bool {
 func GetProductVersions(product string) []string {
 	url := fmt.Sprintf("https://ftp.mozilla.org/pub/%s/releases/", product)
 
-	response, _ := http.Get(url)
-	defer response.Body.Close()
-
-	html, _ := ioutil.ReadAll(response.Body)
-	fmt.Println(string(html))
+	doc, err := goquery.NewDocument(url)
+	if err != nil {
+		fmt.Print("Failed to fetch releases page")
+	}
+	branches := make(map[string][]string)
+	doc.Find("a").Each(func(_ int, link *goquery.Selection) {
+		label := strings.Replace(link.Text(), "/", "", -1)
+		if !strings.ContainsAny(label, "a | b | c") && !strings.Contains(label, "..") {
+			key := strings.Split(label, ".")[0]
+			branches[key] = append(branches[key], label)
+		}
+	})
 	return nil
 }
 
