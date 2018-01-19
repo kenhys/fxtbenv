@@ -93,6 +93,7 @@ func GetProductVersions(product string) []string {
 
 	for _, key := range keyVersions {
 		versions := GetSortedLabelVersions(branches[key])
+		fmt.Print(fmt.Sprintf("%s ", strings.Split(versions[0], ".")[0]))
 		fmt.Println(versions)
 	}
 	return nil
