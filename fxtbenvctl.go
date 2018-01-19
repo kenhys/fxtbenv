@@ -6,6 +6,7 @@ import (
 	"github.com/hashicorp/go-getter"
 	version "github.com/hashicorp/go-version"
 	"github.com/urfave/cli"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 	"sort"
@@ -171,6 +172,23 @@ func InstallProduct(product string, version string) {
 	InstallAutoconfigCfgFile(productDir)
 }
 
+func ShowInstalledProduct(products []string) {
+	for _, product := range products {
+		homeDir := GetFxTbHomeDirectory()
+		productDir := filepath.Join(homeDir, product, "versions")
+		files, err := ioutil.ReadDir(productDir)
+		if err != nil {
+			return
+		}
+
+		for _, file := range files {
+			if file.IsDir() {
+				fmt.Println(fmt.Sprintf("%s %s", product, file.Name()))
+			}
+		}
+	}
+}
+
 func main() {
 	app := cli.NewApp()
 	app.EnableBashCompletion = true
@@ -228,6 +246,19 @@ func main() {
 						return nil
 					},
 				},
+			},
+		},
+		{
+			Name:    "list",
+			Aliases: []string{"l"},
+			Usage:   "List installed Firefox/Thunderbird",
+			Action: func(c *cli.Context) error {
+				if c.NArg() == 0 {
+					ShowInstalledProduct([]string{"firefox", "thunderbird"})
+				} else {
+					ShowInstalledProduct(c.Args())
+				}
+				return nil
 			},
 		},
 	}
