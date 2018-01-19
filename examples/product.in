@@ -23,11 +23,15 @@ if [ -f "$RCFILE" ]; then
 	    __REFPRODUCT__ -no-remote -profile $PROFILE
 	fi
     else
-	if [ -z "$product" ]; then
-	    FALLBACK=1
-	else
+	if [ -n "$product" ]; then
 	    echo "Failed to parse configuration file: $RCFILE:"
 	    echo "Invalid product name: $product"
+	else
+	    if [ -n "$FXTBENV_PRODUCT" -a -n "$FXTBENV_PROFILE" ]; then
+		$FXTBENV_PRODUCT -no-remote -profile $FXTBENV_HOME/.fxtbenv/$FXTBENV_PRODUCT/profiles/$FXTBENV_PROFILE
+	    else
+		FALLBACK=1
+	    fi
 	fi
     fi
 else
