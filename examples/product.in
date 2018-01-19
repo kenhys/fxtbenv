@@ -35,7 +35,11 @@ if [ -f "$RCFILE" ]; then
 	fi
     fi
 else
-    FALLBACK=1
+    if [ -n "$FXTBENV_PRODUCT" -a -n "$FXTBENV_PROFILE" ]; then
+	$FXTBENV_PRODUCT -no-remote -profile $FXTBENV_HOME/$FXTBENV_PRODUCT/profiles/$FXTBENV_PROFILE
+    else
+	FALLBACK=1
+    fi
 fi
 echo $*
 if [ $FALLBACK -eq 1 ]; then
