@@ -27,6 +27,21 @@ func IsInitialized() bool {
 	if !stat.IsDir() {
 		return false
 	}
+	products := []string{"firefox", "thunderbird"}
+	for _, product := range products {
+		targets := []string{"versions", "profiles"}
+		productDir := filepath.Join(homeDir, product)
+		for _, target := range targets {
+			targetDir := filepath.Join(productDir, target)
+			stat, err := os.Stat(targetDir)
+			if err != nil {
+				return false
+			}
+			if !stat.IsDir() {
+				return false
+			}
+		}
+	}
 	return true
 }
 
