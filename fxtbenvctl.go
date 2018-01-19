@@ -2,14 +2,14 @@ package main
 
 import (
 	"fmt"
+	"github.com/PuerkitoBio/goquery"
 	"github.com/hashicorp/go-getter"
+	version "github.com/hashicorp/go-version"
 	"github.com/urfave/cli"
 	"os"
 	"path/filepath"
-	"strings"
-	"github.com/PuerkitoBio/goquery"
-	version "github.com/hashicorp/go-version"
 	"sort"
+	"strings"
 )
 
 func GetFxTbHomeDirectory() string {
