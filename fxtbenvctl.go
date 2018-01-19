@@ -14,11 +14,12 @@ import (
 
 func GetFxTbHomeDirectory() string {
 	fxtbHomeDir := os.ExpandEnv(`${FXTBENV_HOME}`)
+	envDir := ""
 	if fxtbHomeDir == "" {
 		homeDir := os.ExpandEnv(`${HOME}`)
-		envDir := filepath.Join(homeDir, ".fxtbenv")
+		envDir = filepath.Join(homeDir, ".fxtbenv")
 	} else {
-		envDir := filepath.Join(fxtbHomeDir, ".fxtbenv")
+		envDir = filepath.Join(fxtbHomeDir, ".fxtbenv")
 	}
 	return envDir
 }
