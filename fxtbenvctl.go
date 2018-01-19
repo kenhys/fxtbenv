@@ -85,7 +85,9 @@ func GetProductVersions(product string) []string {
 	})
 	keys := []string{}
 	for key, _ := range branches {
-		keys = append(keys, key)
+		if key != "devpreview" && key != "shiretoko" {
+			keys = append(keys, key)
+		}
 	}
 	keyVersions := GetSortedLabelVersions(keys)
 
