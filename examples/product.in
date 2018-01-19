@@ -1,0 +1,43 @@
+#!/bin/bash
+
+RCFILE="$(pwd)/.fxtbenvrc"
+echo $RCFILE
+FALLBACK=0
+if [ -f "$RCFILE" ]; then
+    line=$(\grep __PRODUCT__ $RCFILE)
+    product=$(echo $line | cut -d'-' -f1)
+    if [ "$product" = "__PRODUCT__" ]; then
+	profile=$(echo $line | cut -d'-' -f2)
+	version=$(echo $profile | cut -d'@' -f1)
+	__VARPRODUCT__=$FXTBENV_HOME/__PRODUCT__/versions/$version/__PRODUCT__
+	PROFILE=$FXTBENV_HOME/__PRODUCT__/profiles/$profile
+	if [ ! -x "__REFPRODUCT__" ]; then
+	    echo "No such firefox: __REFPRODUCT__"
+	    echo "Install No such __PRODUCT__: __REFPRODUCT__"
+	else
+	    echo "__REFPRODUCT__ -no-remote -profile $PROFILE"
+	    if [ ! -d "$PROFILE" ]; then
+		echo "Creating profile directory: $PROFILE"
+		mkdir -p $PROFILE
+	    fi
+	    __REFPRODUCT__ -no-remote -profile $PROFILE
+	fi
+    else
+	if [ -z "$product" ]; then
+	    FALLBACK=1
+	else
+	    echo "Failed to parse configuration file: $RCFILE:"
+	    echo "Invalid product name: $product"
+	fi
+    fi
+else
+    FALLBACK=1
+fi
+echo $*
+if [ $FALLBACK -eq 1 ]; then
+    for bin in /usr/local/bin/__PRODUCT__ /usr/bin/__PRODUCT__; do
+	if [ -x "$bin" ]; then
+	    $bin -P $*
+	fi
+    done
+fi
