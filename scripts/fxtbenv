@@ -23,6 +23,8 @@ if [ -z "$FXTBENV_DISABLE_ANSICOLOR" ]; then
     FXTBENV_DISABLE_ANSICOLOR=0
 fi
 
+FXTBENV_CREATE_PROFILE_DIR=0
+
 fxtbenv_usage_use () {
     echo "$(fxtbenv_name): fxtbenv use [--create|-c] firefox-VERSION@PROFILE"
     echo "$(fxtbenv_name): fxtbenv use [--create|-c] thunderbird-VERSION@PROFILE"
