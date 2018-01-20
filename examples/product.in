@@ -27,6 +27,8 @@ if [ -f "$RCFILE" ]; then
 	    echo "Failed to parse configuration file: $RCFILE:"
 	    echo "Invalid product name: $product"
 	else
+	    echo "FXTBENV_PRODUCT: $FXTBENV_PRODUCT"
+	    echo "FXTBENV_PROFILE: $FXTBENV_PROFILE"
 	    if [ -n "$FXTBENV_PRODUCT" -a -n "$FXTBENV_PROFILE" ]; then
 		$FXTBENV_PRODUCT -no-remote -profile $FXTBENV_HOME/$FXTBENV_PRODUCT/profiles/$FXTBENV_PROFILE
 	    else
@@ -45,6 +47,7 @@ echo $*
 if [ $FALLBACK -eq 1 ]; then
     for bin in /usr/local/bin/__PRODUCT__ /usr/bin/__PRODUCT__; do
 	if [ -x "$bin" ]; then
+	    echo "Fallback to $bin"
 	    $bin -P $*
 	fi
     done
