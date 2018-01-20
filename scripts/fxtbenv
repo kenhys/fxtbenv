@@ -23,15 +23,27 @@ fxtbenv_usage_use () {
     echo "\e[37m\e[42mfxtbenv\e[0m: fxtbenv use [--create|-c] firefox-VERSION@PROFILE"
     echo "\e[37m\e[42mfxtbenv\e[0m: fxtbenv use [--create|-c] thunderbird-VERSION@PROFILE"
 fxtbenv_name () {
-    echo "\e[37m\e[42mfxtbenv\e[0m"
+    if [ $FXTBENV_DISABLE_ANSICOLOR -eq 1 ]; then
+	echo "fxtbenv"
+    else
+	echo "\e[37m\e[42mfxtbenv\e[0m"
+    fi
 }
 
 fxtbenv_warning () {
-    echo "\e[37m\e[43mwarning\e[0m"
+    if [ $FXTBENV_DISABLE_ANSICOLOR -eq 1 ]; then
+	echo "warning"
+    else
+	echo "\e[37m\e[43mwarning\e[0m"
+    fi
 }
 
 fxtbenv_error () {
-    echo "\e[37m\e[41m$1\e[0m"
+    if [ $FXTBENV_DISABLE_ANSICOLOR -eq 1 ]; then
+	echo "$1"
+    else
+	echo "\e[37m\e[41m$1\e[0m"
+    fi
 }
 
 fxtbenv () {
