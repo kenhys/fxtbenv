@@ -2,7 +2,16 @@
 
 fxtbenv_parse_profile() {
     profile=$(echo $1 | cut -d'-' -f2)
-    echo $profile
+    case $profile in
+	*@*)
+	    echo $profile
+	    return 0
+	    ;;
+	*)
+	    echo $profile
+	    return 1
+	    ;;
+    esac
 }
 
 fxtbenv_parse_product() {
