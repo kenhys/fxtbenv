@@ -4,14 +4,15 @@
 
 Firefox/Thunderbird environment manager.
 
-## Why `fxtbenv`
+## Why fxtbenv?
 
+Need to switch multiple version of Firefox/Thunderbird for verifying difference of functinality among them.
 
 ## Requirements
 
 * go 1.9.2 or later
 
-## How to Install `fxtbenv`
+## How to Install fxtbenv
 
 ```
 $ git clone https://github.com/kenhys/fxtbenv $HOME/.fxtbenv
@@ -20,8 +21,7 @@ $ make
 $ source $HOME/.fxtbenv/scripts/fxtbenv
 ```
 
-## `fxtbenv` Usage
-
+## Usage
 
 ## License
 
