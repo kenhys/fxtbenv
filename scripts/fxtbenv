@@ -19,6 +19,10 @@ fxtbenv_parse_product() {
     echo $product
 }
 
+if [ -z "$FXTBENV_DISABLE_ANSICOLOR" ]; then
+    FXTBENV_DISABLE_ANSICOLOR=0
+fi
+
 fxtbenv_usage_use () {
     echo "$(fxtbenv_name): fxtbenv use [--create|-c] firefox-VERSION@PROFILE"
     echo "$(fxtbenv_name): fxtbenv use [--create|-c] thunderbird-VERSION@PROFILE"
