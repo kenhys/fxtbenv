@@ -20,8 +20,10 @@ fxtbenv_parse_product() {
 }
 
 fxtbenv_usage_use () {
-    echo "\e[37m\e[42mfxtbenv\e[0m: fxtbenv use [--create|-c] firefox-VERSION@PROFILE"
-    echo "\e[37m\e[42mfxtbenv\e[0m: fxtbenv use [--create|-c] thunderbird-VERSION@PROFILE"
+    echo "$(fxtbenv_name): fxtbenv use [--create|-c] firefox-VERSION@PROFILE"
+    echo "$(fxtbenv_name): fxtbenv use [--create|-c] thunderbird-VERSION@PROFILE"
+}
+
 fxtbenv_name () {
     if [ $FXTBENV_DISABLE_ANSICOLOR -eq 1 ]; then
 	echo "fxtbenv"
@@ -63,7 +65,7 @@ fxtbenv () {
 			target=$1
 			;;
 		    *)
-			echo "\e[37m\e[42m$0\e[0m: \e[37m\e[43mwarning\e[0m invalid argument: \e[37m\e[41m$1\e[0m"
+			echo "$(fxtbenv_name):  invalid argument: $(fxtbenv_error $1)"
 			fxtbenv_usage_use
 			return 1
 			;;
