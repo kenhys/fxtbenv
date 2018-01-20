@@ -79,21 +79,29 @@ fxtbenv () {
 		shift
 	    done
 	    product=$(fxtbenv_parse_product $target)
-		profile=$(echo $1 | cut -d'-' -f2)
-		version=$(echo $profile | cut -d'@' -f1)
-		product_dir="$FXTBENV_HOME/${product}/versions/${version}"
-		if [ ! -d "$product_dir" ]; then
-		    echo "Not installed: $product $version"
-		    return 1
-		else
-		    PROFILE_DIR="$FXTBENV_HOME/${product}/profiles/${profile}"
-		    if [ ! -d "$PROFILE_DIR" ]; then
-			echo "No such a profile($profile): $PROFILE_DIR"
+	    profile=$(fxtbenv_parse_profile $target)
+	    if [ $? -ne 0 ]; then
+		echo "$(fxtbenv_name): $(fxtbenv_warning) invalid profile name: $(fxtbenv_error $profile)"
+		fxtbenv_usage_use
+		return 1
+	    fi
+	    version=$(echo $profile | cut -d'@' -f1)
+	    product_dir="$FXTBENV_HOME/${product}/versions/${version}"
+	    if [ ! -d "$product_dir" ]; then
+		echo "$(fxtbenv_name): $(fxtbenv_warning) not installed: $product $version"
+		return 1
+	    else
+		profile_dir="$FXTBENV_HOME/${product}/profiles/${profile}"
+		if [ ! -d "$profile_dir" ]; then
+		    echo "$(fxtbenv_name): $(fxtbenv_warning) no such a profile($profile): $profile_dir"
+		    if [ $FXTBENV_CREATE_PROFILE_DIR -eq 1 ]; then
+			echo "$(fxtbenv_name): creating profile($profile): $profile_dir"
 			mkdir -p $PROFILE_DIR
 		    fi
-		    export FXTBENV_PROFILE=$profile
-		    export FXTBENV_PRODUCT=$product
 		fi
+		export FXTBENV_PROFILE=$profile
+		export FXTBENV_PRODUCT=$product
+	    fi
 	    ;;
 	*)
 	    $FXTBENV_HOME/bin/fxtbenvctl $*
