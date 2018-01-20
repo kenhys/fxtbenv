@@ -66,6 +66,14 @@ fxtbenv_error () {
     fi
 }
 
+fxenv () {
+    fxtbenv $*
+}
+
+tbenv () {
+    fxtbenv $*
+}
+
 fxtbenv () {
     if [ -z "$FXTBENV_HOME" ]; then
 	export FXTBENV_HOME=$HOME/.fxtbenv
