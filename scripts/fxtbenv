@@ -26,12 +26,21 @@ fi
 FXTBENV_CREATE_PROFILE_DIR=0
 
 fxtbenv_list () {
-    for profile_dir in $FXTBENV_HOME/firefox/profiles $FXTBENV_HOME/thunderbird/profiles; do
+    for product in firefox thunderbird; do
+	profile_dir=$FXTBENV_HOME/$product/profiles
 	for profile in `ls -1 $profile_dir`; do
-	    if [ $FXTBENV_PROFILE = "$profile" ]; then
-		printf "%3s %s %s\n" " *" $profile
+	    case $product in
+		firefox)
+		    target_profile=$FXTBENV_FIREFOX_PROFILE
+		    ;;
+		thunderbird)
+		    target_profile=$FXTBENV_THUNDERBIRD_PROFILE
+		    ;;
+	    esac
+	    if [ "$target_profile" = "$profile" ]; then
+		printf "%3s %s-%s\n" " *" $product $profile
 	    else
-		printf "%3s %s\n" "" $profile
+		printf "%3s %s-%s\n" "" $product $profile
 	    fi
 	done
     done
