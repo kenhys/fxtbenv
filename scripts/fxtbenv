@@ -27,6 +27,9 @@ FXTBENV_CREATE_PROFILE_DIR=0
 
 fxtbenv_list () {
     for product in firefox thunderbird; do
+	if [ -n "$FXTBENV_PRODUCT" -a "$FXTBENV_PRODUCT" != "$product" ]; then
+	    continue
+	fi
 	profile_dir=$FXTBENV_HOME/$product/profiles
 	for profile in `ls -1 $profile_dir`; do
 	    case $product in
@@ -76,10 +79,12 @@ fxtbenv_error () {
 }
 
 fxenv () {
+    export FXTBENV_PRODUCT=firefox
     fxtbenv $*
 }
 
 tbenv () {
+    export FXTBENV_PRODUCT=thunderbird
     fxtbenv $*
 }
 
@@ -138,7 +143,8 @@ fxtbenv () {
 		esac
 	    fi
 	    ;;
-	list)
+	list|l)
+	    shift
 	    fxtbenv_list
 	    ;;
 	*)
