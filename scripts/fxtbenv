@@ -1,5 +1,10 @@
 #!/bin/bash
 
+fxtbenv_usage_use () {
+    echo "\e[37m\e[42mfxtbenv\e[0m: fxtbenv use [--create|-c] firefox-VERSION@PROFILE"
+    echo "\e[37m\e[42mfxtbenv\e[0m: fxtbenv use [--create|-c] thunderbird-VERSION@PROFILE"
+}
+
 fxtbenv () {
     if [ -z "$FXTBENV_HOME" ]; then
 	export FXTBENV_HOME=$HOME/.fxtbenv
