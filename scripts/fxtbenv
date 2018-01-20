@@ -25,6 +25,18 @@ fi
 
 FXTBENV_CREATE_PROFILE_DIR=0
 
+fxtbenv_list () {
+    for profile_dir in $FXTBENV_HOME/firefox/profiles $FXTBENV_HOME/thunderbird/profiles; do
+	for profile in `ls -1 $profile_dir`; do
+	    if [ $FXTBENV_PROFILE = "$profile" ]; then
+		printf "%3s %s %s\n" " *" $profile
+	    else
+		printf "%3s %s\n" "" $profile
+	    fi
+	done
+    done
+}
+
 fxtbenv_usage_use () {
     echo "$(fxtbenv_name): fxtbenv use [--create|-c] firefox-VERSION@PROFILE"
     echo "$(fxtbenv_name): fxtbenv use [--create|-c] thunderbird-VERSION@PROFILE"
@@ -102,6 +114,9 @@ fxtbenv () {
 		export FXTBENV_PROFILE=$profile
 		export FXTBENV_PRODUCT=$product
 	    fi
+	    ;;
+	list)
+	    fxtbenv_list
 	    ;;
 	*)
 	    $FXTBENV_HOME/bin/fxtbenvctl $*
