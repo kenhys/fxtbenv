@@ -1,3 +1,5 @@
+![MPL-2.0](https://img.shields.io/badge/License-MPL2.0-green.svg?style=flat)
+
 # Fxtbenv
 
 Firefox/Thunderbird environment manager.
