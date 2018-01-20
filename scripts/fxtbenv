@@ -1,0 +1,36 @@
+#!/bin/bash
+
+fxtbenv () {
+    if [ -z "$FXTBENV_HOME" ]; then
+	export FXTBENV_HOME=$HOME/.fxtbenv
+    fi
+    case $1 in
+	use)
+	    shift
+	    product=$(echo $1 | cut -d'-' -f1)
+	    if [ $product = "firefox" -o $product = "thunderbird" ]; then
+		profile=$(echo $1 | cut -d'-' -f2)
+		version=$(echo $profile | cut -d'@' -f1)
+		product_dir="$FXTBENV_HOME/${product}/versions/${version}"
+		if [ ! -d "$product_dir" ]; then
+		    echo "Not installed: $product $version"
+		    return 1
+		else
+		    PROFILE_DIR="$FXTBENV_HOME/${product}/profiles/${profile}"
+		    if [ ! -d "$PROFILE_DIR" ]; then
+			echo "No such a profile($profile): $PROFILE_DIR"
+			mkdir -p $PROFILE_DIR
+		    fi
+		    export FXTBENV_PROFILE=$profile
+		    export FXTBENV_PRODUCT=$product
+		fi
+	    else
+		echo "Invalid product name: $product"
+		return 1
+	    fi
+	    ;;
+	*)
+	    $FXTBENV_HOME/bin/fxtbenvctl $*
+	    ;;
+    esac
+}
