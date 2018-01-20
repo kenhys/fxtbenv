@@ -192,6 +192,16 @@ func ShowInstalledProduct(products []string) {
 	}
 }
 
+func UninstallProduct(product string, version string) {
+	homeDir := GetFxTbHomeDirectory()
+
+	targetDir := filepath.Join(homeDir, product, "versions", version)
+	fmt.Println(targetDir)
+	if err := os.RemoveAll(targetDir); err != nil {
+		fmt.Println(err)
+	}
+}
+
 func main() {
 	app := cli.NewApp()
 	app.EnableBashCompletion = true
@@ -246,6 +256,51 @@ func main() {
 						}
 						InstallProduct("thunderbird", c.Args().First())
 						fmt.Println("fxtb install tb:", c.Args().First())
+						return nil
+					},
+				},
+			},
+		},
+		{
+			Name:    "uninstall",
+			Aliases: []string{"un"},
+			Usage:   "Uninstall Firefox/Thunderbird",
+			Subcommands: []cli.Command{
+				{
+					Name:    "firefox",
+					Aliases: []string{"fx"},
+					Usage:   "Uninstall Firefox",
+					Flags: []cli.Flag{
+						cli.BoolFlag{Name: "force, f"},
+					},
+					Action: func(c *cli.Context) error {
+						if c.Bool("force") {
+						}
+						if c.NArg() == 0 {
+							fmt.Println(fmt.Errorf("Specify Firefox version to uninstall it."))
+							os.Exit(1)
+						}
+						UninstallProduct("firefox", c.Args().First())
+						fmt.Println("uinstall firefox:", c.Args().First())
+						return nil
+					},
+				},
+				{
+					Name:    "thunderbird",
+					Aliases: []string{"tb"},
+					Usage:   "Install Thunderbird",
+					Flags: []cli.Flag{
+						cli.BoolFlag{Name: "force, f"},
+					},
+					Action: func(c *cli.Context) error {
+						if c.Bool("force") {
+						}
+						if c.NArg() == 0 {
+							fmt.Println(fmt.Errorf("Specify Thunderbird version to uninstall it."))
+							os.Exit(1)
+						}
+						UninstallProduct("thunderbird", c.Args().First())
+						fmt.Println("uninstall thunderbird:", c.Args().First())
 						return nil
 					},
 				},
