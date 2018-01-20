@@ -119,8 +119,14 @@ fxtbenv () {
 			mkdir -p $PROFILE_DIR
 		    fi
 		fi
-		export FXTBENV_PROFILE=$profile
-		export FXTBENV_PRODUCT=$product
+		case $product in
+		    firefox)
+			export FXTBENV_FIREFOX_PROFILE=$profile
+			;;
+		    thunderbird)
+			export FXTBENV_THUNDERBIRD_PROFILE=$profile
+			;;
+		esac
 	    fi
 	    ;;
 	list)
