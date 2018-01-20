@@ -1,5 +1,15 @@
 #!/bin/bash
 
+fxtbenv_parse_profile() {
+    profile=$(echo $1 | cut -d'-' -f2)
+    echo $profile
+}
+
+fxtbenv_parse_product() {
+    product=$(echo $1 | cut -d'-' -f1)
+    echo $product
+}
+
 fxtbenv_usage_use () {
     echo "\e[37m\e[42mfxtbenv\e[0m: fxtbenv use [--create|-c] firefox-VERSION@PROFILE"
     echo "\e[37m\e[42mfxtbenv\e[0m: fxtbenv use [--create|-c] thunderbird-VERSION@PROFILE"
