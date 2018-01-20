@@ -1,6 +1,6 @@
 #!/bin/bash
 
-fxtbenv_parse_profile() {
+fxtbenv_parse_profile () {
     profile=$(echo $1 | cut -d'-' -f2)
     case $profile in
 	*@*)
@@ -14,7 +14,7 @@ fxtbenv_parse_profile() {
     esac
 }
 
-fxtbenv_parse_product() {
+fxtbenv_parse_product () {
     product=$(echo $1 | cut -d'-' -f1)
     echo $product
 }
