@@ -207,6 +207,23 @@ func UninstallProduct(product string, version string) {
 	}
 }
 
+func ShowProfiles(products []string) {
+	for _, product := range products {
+		homeDir := GetFxTbHomeDirectory()
+		productDir := filepath.Join(homeDir, product, "profiles")
+		files, err := ioutil.ReadDir(productDir)
+		if err != nil {
+			return
+		}
+
+		for _, file := range files {
+			if file.IsDir() {
+				fmt.Println(fmt.Sprintf("%11s %s", product, file.Name()))
+			}
+		}
+	}
+}
+
 func Warning(message string, arguments ...string) {
 	fmt.Printf("%s: %s %s: ", info("fxtbenv"), warn("warning"), message)
 	for _, argument := range arguments {
@@ -369,9 +386,17 @@ func main() {
 			},
 			Action: func(c *cli.Context) error {
 				if c.NArg() == 0 {
-					ShowInstalledProduct([]string{"firefox", "thunderbird"})
+					if c.Bool("profile") {
+						ShowProfiles([]string{"firefox", "thunderbird"})
+					} else {
+						ShowInstalledProduct([]string{"firefox", "thunderbird"})
+					}
 				} else {
-					ShowInstalledProduct(c.Args())
+					if c.Bool("profile") {
+						ShowProfiles(c.Args())
+					} else {
+						ShowInstalledProduct(c.Args())
+					}
 				}
 				return nil
 			},
