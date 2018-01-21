@@ -237,6 +237,24 @@ func FxtbWErrorf(format string, value string) error {
 }
 
 
+func ParseProfileString(argument string) (string, string, string, error) {
+	message := "invalid profile argument, it must be firefox-VERSION@PROFILE or thunderbird-VERSION@PROFILE"
+	if !strings.Contains(argument, "-") {
+		return "", "", "", FxtbWErrorf(message, warn(argument))
+	}
+	arguments := strings.Split(argument, "-")
+	product := arguments[0]
+	profver := arguments[1]
+	if product != "firefox" && product != "thunderbird" {
+		return product, "", profver, FxtbWErrorf("invalid product name", fmt.Sprintf("%s-%s", warn(product), profver))
+	}
+	if !strings.Contains(profver, "@") {
+		return "", "", profver, FxtbWErrorf(message, fmt.Sprintf("%s-%s", product, warn(profver)))
+	}
+	version := strings.Split(profver, "@")[0]
+	return product, version, profver, nil
+}
+
 func main() {
 	app := cli.NewApp()
 	app.Name = "fxtbenv"
