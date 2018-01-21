@@ -128,7 +128,7 @@ fxtbenv () {
 	    ;;
 	list|l)
 	    shift
-	    fxtbenv_list
+	    $FXTBENV_HOME/bin/fxtbenvctl list
 	    ;;
 	*)
 	    $FXTBENV_HOME/bin/fxtbenvctl $*
