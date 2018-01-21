@@ -376,6 +376,52 @@ func main() {
 				return nil
 			},
 		},
+		{
+			Name:    "use",
+			Aliases: []string{"u"},
+			Usage:   "Switch to specific profile",
+			Flags: []cli.Flag{
+				cli.BoolFlag{Name: "create, c"},
+			},
+			Action: func(c *cli.Context) error {
+				Debug("arg", c.Args()...)
+				if c.NArg() == 0 {
+					ShowInstalledProduct([]string{"firefox", "thunderbird"})
+				} else if c.NArg() > 1 {
+					Warning("too much arguments", c.Args()...)
+				} else {
+					product, version, profver, err := ParseProfileString(c.Args().First())
+					if err != nil {
+						fmt.Println(err)
+						os.Exit(1)
+					}
+					fxtbHome := GetFxTbHomeDirectory()
+					versionDir := filepath.Join(fxtbHome, product, "versions", version)
+					stat, err := os.Stat(versionDir)
+					if err != nil {
+						Warning(fmt.Sprintf("specified %s %s is not installed", product, version), c.Args()...)
+						os.Exit(1)
+					}
+					profileDir := filepath.Join(fxtbHome, product, "profiles", profver)
+					stat, err = os.Stat(profileDir)
+					if err != nil {
+						if c.Bool("create") {
+							Info("creating", profileDir)
+							os.MkdirAll(profileDir, 0700)
+						} else {
+							Warning("missing profile directory", c.Args()...)
+							os.Exit(1)
+						}
+					} else {
+						if !stat.IsDir() {
+							Warning("invalid profile directory", c.Args()...)
+							os.Exit(1)
+						}
+					}
+				}
+				return nil
+			},
+		},
 	}
 	app.Run(os.Args)
 }
