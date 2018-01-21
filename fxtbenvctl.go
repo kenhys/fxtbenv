@@ -204,6 +204,7 @@ func UninstallProduct(product string, version string) {
 
 func main() {
 	app := cli.NewApp()
+	app.Name = "fxtbenv"
 	app.EnableBashCompletion = true
 	app.Usage = "Install multiple Firefox/Thunderbird and switch them."
 	app.Version = "0.1.0"
