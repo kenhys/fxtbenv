@@ -253,7 +253,6 @@ func FxtbWErrorf(format string, value string) error {
 		info("fxtbenv"), warn("warning"), format, value)
 }
 
-
 func ParseProfileString(argument string) (string, string, string, error) {
 	message := "invalid profile argument, it must be firefox-VERSION@PROFILE or thunderbird-VERSION@PROFILE"
 	if !strings.Contains(argument, "-") {
