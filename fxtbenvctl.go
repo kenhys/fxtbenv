@@ -16,6 +16,7 @@ import (
 
 var warn = color.New(color.FgWhite, color.BgRed).SprintFunc()
 var info = color.New(color.FgWhite, color.BgGreen).SprintFunc()
+var debug = color.New(color.FgWhite, color.BgCyan).SprintFunc()
 
 func GetFxTbHomeDirectory() string {
 	envDir := os.ExpandEnv(`${FXTBENV_HOME}`)
