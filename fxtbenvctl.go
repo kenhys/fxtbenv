@@ -364,6 +364,9 @@ func main() {
 			Name:    "list",
 			Aliases: []string{"l"},
 			Usage:   "List installed Firefox/Thunderbird",
+			Flags: []cli.Flag{
+				cli.BoolFlag{Name: "profile, p"},
+			},
 			Action: func(c *cli.Context) error {
 				if c.NArg() == 0 {
 					ShowInstalledProduct([]string{"firefox", "thunderbird"})
