@@ -206,6 +206,29 @@ func UninstallProduct(product string, version string) {
 	}
 }
 
+func Warning(message string, arguments ...string) {
+	fmt.Printf("%s: %s %s: ", info("fxtbenv"), warn("warning"), message)
+	for _, argument := range arguments {
+		fmt.Printf("%s ", argument)
+	}
+	fmt.Println("")
+}
+
+func Info(message string, arguments ...string) {
+	fmt.Printf("%s: %s %s: ", info("fxtbenv"), info("info"), message)
+	for _, argument := range arguments {
+		fmt.Printf("%s ", argument)
+	}
+	fmt.Println("")
+}
+
+func Debug(message string, arguments ...string) {
+	fmt.Printf("%s: %s %s: ", info("fxtbenv"), debug("debug"), message)
+	for _, argument := range arguments {
+		fmt.Printf("%s ", argument)
+	}
+	fmt.Println("")
+}
 func main() {
 	app := cli.NewApp()
 	app.Name = "fxtbenv"
