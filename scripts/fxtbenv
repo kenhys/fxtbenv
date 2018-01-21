@@ -96,52 +96,35 @@ fxtbenv () {
 	use)
 	    shift
 	    target=""
+	    option=""
 	    while [ $# -gt 0 ]; do
 		case $1 in
 		    --create|-c)
-			FXTBENV_CREATE_PROFILE_DIR=1
+			option="-c"
 			;;
 		    firefox-*|thunderbird-*)
 			target=$1
 			;;
 		    *)
-			echo "$(fxtbenv_name):  invalid argument: $(fxtbenv_error $1)"
-			fxtbenv_usage_use
-			return 1
 			;;
 		esac
 		shift
 	    done
+	    $FXTBENV_HOME/bin/fxtbenvctl use $option $target
+	    if [ $? -ne 0 ]; then
+		$FXTBENV_HOME/bin/fxtbenvctl use -h
+		exit 1
+	    fi
 	    product=$(fxtbenv_parse_product $target)
 	    profile=$(fxtbenv_parse_profile $target)
-	    if [ $? -ne 0 ]; then
-		echo "$(fxtbenv_name): $(fxtbenv_warning) invalid profile name: $(fxtbenv_error $profile)"
-		fxtbenv_usage_use
-		return 1
-	    fi
-	    version=$(echo $profile | cut -d'@' -f1)
-	    product_dir="$FXTBENV_HOME/${product}/versions/${version}"
-	    if [ ! -d "$product_dir" ]; then
-		echo "$(fxtbenv_name): $(fxtbenv_warning) not installed: $product $version"
-		return 1
-	    else
-		profile_dir="$FXTBENV_HOME/${product}/profiles/${profile}"
-		if [ ! -d "$profile_dir" ]; then
-		    echo "$(fxtbenv_name): $(fxtbenv_warning) no such a profile($profile): $profile_dir"
-		    if [ $FXTBENV_CREATE_PROFILE_DIR -eq 1 ]; then
-			echo "$(fxtbenv_name): creating profile($profile): $profile_dir"
-			mkdir -p $PROFILE_DIR
-		    fi
-		fi
-		case $product in
-		    firefox)
-			export FXTBENV_FIREFOX_PROFILE=$profile
-			;;
-		    thunderbird)
-			export FXTBENV_THUNDERBIRD_PROFILE=$profile
-			;;
-		esac
-	    fi
+	    case $product in
+		firefox)
+		    export FXTBENV_FIREFOX_PROFILE=$profile
+		    ;;
+		thunderbird)
+		    export FXTBENV_THUNDERBIRD_PROFILE=$profile
+		    ;;
+	    esac
 	    ;;
 	list|l)
 	    shift
