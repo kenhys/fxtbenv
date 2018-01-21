@@ -191,7 +191,7 @@ func ShowInstalledProduct(products []string) {
 
 		for _, file := range files {
 			if file.IsDir() {
-				fmt.Println(fmt.Sprintf("%s %s", product, file.Name()))
+				fmt.Println(fmt.Sprintf("%11s %s", product, file.Name()))
 			}
 		}
 	}
