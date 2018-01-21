@@ -128,7 +128,22 @@ fxtbenv () {
 	    ;;
 	list|l)
 	    shift
-	    $FXTBENV_HOME/bin/fxtbenvctl list
+	    option=""
+	    target=""
+	    while [ $# -gt 0 ]; do
+		case $1 in
+		    -profile|-p)
+			option="-p"
+			;;
+		    firefox-*|thunderbird-*)
+			target="$target $1"
+			;;
+		    *)
+			;;
+		esac
+		shift
+	    done
+	    $FXTBENV_HOME/bin/fxtbenvctl list $option $target
 	    ;;
 	*)
 	    $FXTBENV_HOME/bin/fxtbenvctl $*
