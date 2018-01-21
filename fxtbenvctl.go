@@ -230,6 +230,13 @@ func Debug(message string, arguments ...string) {
 	}
 	fmt.Println("")
 }
+
+func FxtbWErrorf(format string, value string) error {
+	return fmt.Errorf("%s: %s %s: %s",
+		info("fxtbenv"), warn("warning"), format, value)
+}
+
+
 func main() {
 	app := cli.NewApp()
 	app.Name = "fxtbenv"
