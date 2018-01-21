@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
+	"github.com/fatih/color"
 	"github.com/hashicorp/go-getter"
 	version "github.com/hashicorp/go-version"
 	"github.com/urfave/cli"
@@ -12,6 +13,9 @@ import (
 	"sort"
 	"strings"
 )
+
+var warn = color.New(color.FgWhite, color.BgRed).SprintFunc()
+var info = color.New(color.FgWhite, color.BgGreen).SprintFunc()
 
 func GetFxTbHomeDirectory() string {
 	envDir := os.ExpandEnv(`${FXTBENV_HOME}`)
