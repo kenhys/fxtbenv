@@ -153,8 +153,8 @@ fxtbenv () {
 		    -profile|-p)
 			option="-p"
 			;;
-		    firefox-*|thunderbird-*)
-			target="$target $1"
+		    firefox|thunderbird)
+			target=$1
 			;;
 		    *)
 			;;
