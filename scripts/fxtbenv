@@ -113,7 +113,7 @@ fxtbenv () {
 	    $FXTBENV_HOME/bin/fxtbenvctl use $option $target
 	    if [ $? -ne 0 ]; then
 		$FXTBENV_HOME/bin/fxtbenvctl use -h
-		exit 1
+		return 1
 	    fi
 	    product=$(fxtbenv_parse_product $target)
 	    profile=$(fxtbenv_parse_profile $target)
