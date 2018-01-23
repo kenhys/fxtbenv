@@ -45,10 +45,10 @@ else
 fi
 echo $*
 if [ $FALLBACK -eq 1 ]; then
-    for bin in /usr/local/bin/__PRODUCT__ /usr/bin/__PRODUCT__; do
-	if [ -x "$bin" ]; then
-	    echo "Fallback to $bin"
-	    $bin -P $*
+    for command in /usr/local/bin/__PRODUCT__ /usr/bin/__PRODUCT__; do
+	if [ -x "$command" ]; then
+	    echo "Fallback to $command"
+	    $command -P $*
 	fi
     done
 fi
