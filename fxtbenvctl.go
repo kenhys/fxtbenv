@@ -42,6 +42,9 @@ func IsInitialized() bool {
 		productDir := filepath.Join(homeDir, product)
 		for _, target := range targets {
 			targetDir := filepath.Join(productDir, target)
+			if target == "versions" {
+				targetDir = filepath.Join(targetDir, "en-US")
+			}
 			stat, err := os.Stat(targetDir)
 			if err != nil {
 				return false
