@@ -3,6 +3,23 @@
 RCFILE="$(pwd)/.fxtbenvrc"
 echo $RCFILE
 FALLBACK=0
+
+run___PRODUCT__ () {
+    command=$1
+    profver=$1
+    if [ ! -x "$command" ]; then
+	echo "No such __PRODUCT__: $command"
+	echo "Install __PRODUCT__ $version by 'fxtbenv install __PRODUCT__ $version'"
+    else
+	echo "$command -no-remote -profile $profver"
+	if [ ! -d "$profver" ]; then
+	    echo "Creating profile directory: $profver"
+	    mkdir -p $profver
+	fi
+	$command -no-remote -profile $profver
+    fi
+}
+
 if [ -f "$RCFILE" ]; then
     line=$(\grep __PRODUCT__ $RCFILE)
     product=$(echo $line | cut -d'-' -f1)
