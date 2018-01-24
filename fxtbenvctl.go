@@ -181,8 +181,7 @@ func InstallProduct(product string, version string) {
 		os.Exit(1)
 	}
 
-	homeDir := os.ExpandEnv(`${HOME}`)
-	productDir := fmt.Sprintf("%s/.fxtbenv/%s/versions/%s", homeDir, product, version)
+	productDir := GetFxTbProductDirectory(product, version, locale)
 	os.Rename(fmt.Sprintf("tmp/%s", product), productDir)
 
 	InstallAutoconfigJsFile(productDir)
