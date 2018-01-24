@@ -160,10 +160,16 @@ func InstallAutoconfigCfgFile(installDir string) {
 func InstallProduct(product string, version string) {
 	base_url := fmt.Sprintf("https://ftp.mozilla.org/pub/%s/releases", product)
 	//base_url := fmt.Sprintf("http://localhost/pub/%s/releases", product)
+	locale := "en-US"
+	if strings.Contains(version, ":") {
+		verloc := strings.SplitN(version, ":", 2)
+		version = verloc[0]
+		locale = verloc[1]
+	}
 	filename := fmt.Sprintf("%s-%s.tar.bz2", product, version)
 
 	fmt.Println(filename)
-	source := fmt.Sprintf("%s/%s/linux-x86_64/ja/%s-%s.tar.bz2", base_url, version, product, version)
+	source := fmt.Sprintf("%s/%s/linux-x86_64/%s/%s", base_url, version, locale, filename)
 	fmt.Println(source)
 	pwd, _ := os.Getwd()
 	client := &getter.Client{
