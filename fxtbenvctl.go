@@ -27,6 +27,12 @@ func GetFxTbHomeDirectory() string {
 	return envDir
 }
 
+func GetFxTbProductDirectory(product string, version string, locale string) string {
+	homeDir := os.ExpandEnv(`${FXTBENV_HOME}`)
+	productDir := fmt.Sprintf("%s/.fxtbenv/%s/%s/%s", homeDir, product, version, locale)
+	return productDir
+}
+
 func IsInitialized() bool {
 	homeDir := GetFxTbHomeDirectory()
 	stat, err := os.Stat(homeDir)
