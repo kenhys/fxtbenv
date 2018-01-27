@@ -185,6 +185,7 @@ func InstallProduct(product string, version string) {
 	}
 
 	productDir := GetFxTbProductDirectory(product, version, locale)
+	os.MkdirAll(filepath.Dir(productDir), 0700)
 	os.Rename(fmt.Sprintf("tmp/%s", product), productDir)
 
 	InstallAutoconfigJsFile(productDir)
