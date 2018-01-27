@@ -196,14 +196,22 @@ func ShowInstalledProduct(products []string) {
 	for _, product := range products {
 		homeDir := GetFxTbHomeDirectory()
 		productDir := filepath.Join(homeDir, product, "versions")
-		files, err := ioutil.ReadDir(productDir)
+		versions, err := ioutil.ReadDir(productDir)
 		if err != nil {
 			return
 		}
 
-		for _, file := range files {
-			if file.IsDir() {
-				fmt.Println(fmt.Sprintf("%11s %s", product, file.Name()))
+		for _, version := range versions {
+			if version.IsDir() {
+				locales, err := ioutil.ReadDir(filepath.Join(productDir, version.Name()))
+				if err != nil {
+					return
+				}
+				for _, locale := range locales {
+					if locale.IsDir() {
+						fmt.Println(fmt.Sprintf("%11s %s:%s", product, version.Name(), locale.Name()))
+					}
+				}
 			}
 		}
 	}
