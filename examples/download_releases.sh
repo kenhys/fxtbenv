@@ -9,16 +9,18 @@ function download_product() {
     version=$2
     BASE=https://ftp.mozilla.org
     file="${product}-${version}.tar.bz2"
-    work="pub/${product}/releases/${version}/linux-x86_64/ja"
-    path="$work/$file"
-    mkdir -p $work
-    if [ ! -f $path ]; then
-	url="$BASE/$path"
-	echo "download: $url"
-	(cd $work && wget -q $url)
-    else
-	echo "skip download: $path"
-    fi
+    for locale in en-US ja; do
+	work="pub/${product}/releases/${version}/linux-x86_64/$locale"
+	path="$work/$file"
+	mkdir -p $work
+	if [ ! -f $path ]; then
+	    url="$BASE/$path"
+	    echo "download: $url"
+	    (cd $work && wget -q $url)
+	else
+	    echo "skip download: $path"
+	fi
+    done
 }
 
 
