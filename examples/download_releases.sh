@@ -51,10 +51,11 @@ function download_product() {
 # done
 
 # download_product firefox 57
-VERSION=57
-LIST=`w3m -dump https://ftp.mozilla.org/pub/firefox/releases/ | cut -d' ' -f3 | \grep "$VERSION.*" | \grep -v esr | \grep -v 0b`
+PRODUCT=$1
+VERSION=$2
+LIST=`w3m -dump https://ftp.mozilla.org/pub/$PRODUCT/releases/ | cut -d' ' -f3 | \grep "$VERSION.*" | \grep -v 0b | \grep -v funnelcake`
 for v in $LIST; do
     version=${v%/}
-    download_product firefox $version
+    download_product $PRODUCT $version
 done
 
