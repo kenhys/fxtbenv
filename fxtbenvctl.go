@@ -158,8 +158,11 @@ func InstallAutoconfigCfgFile(installDir string) {
 }
 
 func InstallProduct(product string, version string) {
+	hostEnv := os.ExpandEnv(`${FXTBENV_HOST}`)
 	base_url := fmt.Sprintf("https://ftp.mozilla.org/pub/%s/releases", product)
-	//base_url := fmt.Sprintf("http://localhost/pub/%s/releases", product)
+	if hostEnv != "" {
+		base_url = fmt.Sprintf("%s/pub/%s/releases", hostEnv, product)
+	}
 	locale := "en-US"
 	if strings.Contains(version, ":") {
 		verloc := strings.SplitN(version, ":", 2)
