@@ -158,11 +158,13 @@ func InstallAutoconfigCfgFile(installDir string) {
 }
 
 func InstallProduct(product string, version string) {
+	base_urls := []string{}
 	hostEnv := os.ExpandEnv(`${FXTBENV_HOST}`)
-	base_url := fmt.Sprintf("https://ftp.mozilla.org/pub/%s/releases", product)
 	if hostEnv != "" {
-		base_url = fmt.Sprintf("%s/pub/%s/releases", hostEnv, product)
+		base_urls = append(base_urls, fmt.Sprintf("%s/pub/%s/releases", hostEnv, product))
 	}
+	base_urls = append(base_urls, fmt.Sprintf("https://ftp.mozilla.org/pub/%s/releases", product))
+
 	locale := "en-US"
 	if strings.Contains(version, ":") {
 		verloc := strings.SplitN(version, ":", 2)
@@ -170,21 +172,28 @@ func InstallProduct(product string, version string) {
 		locale = verloc[1]
 	}
 	filename := fmt.Sprintf("%s-%s.tar.bz2", product, version)
-
 	fmt.Println(filename)
-	source := fmt.Sprintf("%s/%s/linux-x86_64/%s/%s", base_url, version, locale, filename)
-	fmt.Println(source)
-	pwd, _ := os.Getwd()
-	client := &getter.Client{
-		Src:  source,
-		Dst:  "tmp",
-		Pwd:  pwd,
-		Mode: getter.ClientModeDir,
-	}
 
-	if err := client.Get(); err != nil {
-		fmt.Println("Error downloading: %s", err)
-		os.Exit(1)
+	fallback := true
+	for _, base_url := range base_urls {
+		if !fallback {
+			continue
+		}
+		source := fmt.Sprintf("%s/%s/linux-x86_64/%s/%s", base_url, version, locale, filename)
+		fmt.Println(source)
+		pwd, _ := os.Getwd()
+		client := &getter.Client{
+			Src:  source,
+			Dst:  "tmp",
+			Pwd:  pwd,
+			Mode: getter.ClientModeDir,
+		}
+
+		if err := client.Get(); err != nil {
+			fmt.Println("Error downloading: %s", err)
+		} else {
+			fallback = true
+		}
 	}
 
 	productDir := GetFxTbProductDirectory(product, version, locale)
