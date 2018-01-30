@@ -6,7 +6,7 @@ FALLBACK=0
 
 run___PRODUCT__ () {
     command=$1
-    profver=$1
+    profver=$2
     if [ ! -x "$command" ]; then
 	echo "No such __PRODUCT__: $command"
 	echo "Install __PRODUCT__ $version by 'fxtbenv install __PRODUCT__ $version'"
