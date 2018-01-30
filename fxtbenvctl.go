@@ -464,19 +464,18 @@ func main() {
 				} else if c.NArg() > 1 {
 					Warning("too much arguments", c.Args()...)
 				} else {
-					product, version, profver, err := ParseProfileString(c.Args().First())
+					product, version, locale, profver, err := ParseProfileString(c.Args().First())
 					if err != nil {
 						fmt.Println(err)
 						os.Exit(1)
 					}
-					fxtbHome := GetFxTbHomeDirectory()
-					versionDir := filepath.Join(fxtbHome, product, "versions", version)
-					stat, err := os.Stat(versionDir)
+					productDir := GetFxTbProductDirectory(product, version, locale)
+					stat, err := os.Stat(productDir)
 					if err != nil {
-						Warning(fmt.Sprintf("specified %s %s is not installed", product, version), c.Args()...)
+						Warning(fmt.Sprintf("specified %s %s %s is not installed", product, version, locale), c.Args()...)
 						os.Exit(1)
 					}
-					profileDir := filepath.Join(fxtbHome, product, "profiles", profver)
+					profileDir := GetFxTbProfileDirectory(product, profver)
 					stat, err = os.Stat(profileDir)
 					if err != nil {
 						if c.Bool("create") {
