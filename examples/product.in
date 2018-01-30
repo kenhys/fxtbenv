@@ -35,9 +35,12 @@ if [ -f "$RCFILE" ]; then
 else
     profile=$FXTBENV___CPRODUCT___PROFILE
     if [ -n "$profile" ]; then
-	version=$(echo $profile | cut -d'@' -f1)
-	command=$FXTBENV_HOME/__PRODUCT__/versions/$version/__PRODUCT__
-	run___PRODUCT__ $command $profver
+	verloc=$(echo $profile | cut -d'@' -f1)
+	version=$(echo $verloc | cut -d':' -f1)
+	locale=$(echo $verloc | cut -d':' -f2)
+	command=$FXTBENV_HOME/__PRODUCT__/versions/$version/$locale/__PRODUCT__
+	profdir=$FXTBENV_HOME/__PRODUCT__/profiles/$profile
+	run___PRODUCT__ $command $profdir
     else
 	FALLBACK=1
     fi
