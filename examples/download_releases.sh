@@ -53,9 +53,27 @@ function download_product() {
 # download_product firefox 57
 PRODUCT=$1
 VERSION=$2
-LIST=`w3m -dump https://ftp.mozilla.org/pub/$PRODUCT/releases/ | cut -d' ' -f3 | \grep "$VERSION.*" | \grep -v 0b | \grep -v funnelcake`
-for v in $LIST; do
-    version=${v%/}
-    download_product $PRODUCT $version
-done
-
+case $VERSION in
+    nightly:*)
+	locale=`echo $VERSION | cut -d':' -f2`
+	filename=`w3m -dump https://ftp.mozilla.org/pub/$PRODUCT/nightly/latest-mozilla-central-l10n/ | cut -d' ' -f2 | \grep ".*\.$locale\.linux-x86_64\.tar\.bz2$" | tail -n1`
+	work="pub/${PRODUCT}/nightly"
+	path="$work/$filename"
+	mkdir -p $work
+	if [ ! -f $path ]; then
+	    url="https://ftp.mozilla.org/pub/$PRODUCT/nightly/latest-mozilla-central-l10n/$filename"
+	    echo "download: $url"
+	    (cd $work && wget -q $url)
+	else
+	    echo "skip download: $path"
+	fi
+	;;
+    nightly)
+	;;
+    *)
+	LIST=`w3m -dump https://ftp.mozilla.org/pub/$PRODUCT/releases/ | cut -d' ' -f3 | \grep "$VERSION.*" | \grep -v 0b | \grep -v funnelcake`
+	for v in $LIST; do
+	    version=${v%/}
+	    download_product $PRODUCT $version
+	done
+esac
