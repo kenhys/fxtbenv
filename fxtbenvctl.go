@@ -221,9 +221,14 @@ func ShowInstalledProduct(products []string) {
 }
 
 func UninstallProduct(product string, version string) {
-	homeDir := GetFxTbHomeDirectory()
+	locale := "en-US"
+	if strings.Contains(version, ":") {
+		verloc := strings.SplitN(version, ":", 2)
+		version = verloc[0]
+		locale = verloc[1]
+	}
 
-	targetDir := filepath.Join(homeDir, product, "versions", version)
+	targetDir := GetFxTbProductDirectory(product, version, locale)
 	fmt.Println(targetDir)
 	if err := os.RemoveAll(targetDir); err != nil {
 		fmt.Println(err)
