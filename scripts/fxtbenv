@@ -86,6 +86,10 @@ fxenv () {
 	    shift
 	    fxtbenv $command firefox $*
 	    ;;
+	use)
+	    shift
+	    fxtbenv $command firefox-$*
+	    ;;
 	*)
 	    fxtbenv
 	    ;;
