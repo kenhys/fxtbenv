@@ -296,22 +296,29 @@ func FxtbWErrorf(format string, value string) error {
 		info("fxtbenv"), warn("warning"), format, value)
 }
 
-func ParseProfileString(argument string) (string, string, string, error) {
+func ParseProfileString(argument string) (string, string, string, string, error) {
 	message := "invalid profile argument, it must be firefox-VERSION@PROFILE or thunderbird-VERSION@PROFILE"
 	if !strings.Contains(argument, "-") {
-		return "", "", "", FxtbWErrorf(message, warn(argument))
+		return "", "", "", "", FxtbWErrorf(message, warn(argument))
 	}
 	arguments := strings.Split(argument, "-")
 	product := arguments[0]
+	// VERSION:LOCALE@PROFILE
 	profver := arguments[1]
 	if product != "firefox" && product != "thunderbird" {
-		return product, "", profver, FxtbWErrorf("invalid product name", fmt.Sprintf("%s-%s", warn(product), profver))
+		return product, "", "", profver, FxtbWErrorf("invalid product name", fmt.Sprintf("%s-%s", warn(product), profver))
 	}
 	if !strings.Contains(profver, "@") {
-		return "", "", profver, FxtbWErrorf(message, fmt.Sprintf("%s-%s", product, warn(profver)))
+		return "", "", "", profver, FxtbWErrorf(message, fmt.Sprintf("%s-%s", product, warn(profver)))
 	}
 	version := strings.Split(profver, "@")[0]
-	return product, version, profver, nil
+	locale := "en-US"
+	if strings.Contains(version, ":") {
+		verloc := strings.Split(version, ":")
+		version = verloc[0]
+		locale = verloc[1]
+	}
+	return product, version, locale, profver, nil
 }
 
 func main() {
