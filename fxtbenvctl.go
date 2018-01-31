@@ -146,20 +146,16 @@ func InstallAutoconfigJsFile(installDir string) {
 }
 
 func InstallAutoconfigCfgFile(installDir string) {
-	cfgPath := fmt.Sprintf("%s/autoconfig.cfg", installDir)
-	contents := []string{
-		"// Disable auto update feature",
-		"lockPref('app.update.auto', false);",
-		"lockPref('app.update.enabled', false);",
-		"lockPref('app.update.url', '');",
-		"lockPref('app.update.url.override', '');",
-		"lockPref('browser.search.update', false);",
-	}
-	file, err := os.OpenFile(cfgPath, os.O_RDWR|os.O_CREATE, 0600)
+	template := fmt.Sprintf("%s/scripts/autoconfig.cfg", GetFxTbHomeDirectory())
+	data, err := ioutil.ReadFile(template)
 	if err != nil {
 		return
 	}
-	file.WriteString(strings.Join(contents, "\r\n"))
+	cfgPath := fmt.Sprintf("%s/autoconfig.cfg", installDir)
+	err = ioutil.WriteFile(cfgPath, data, 0644)
+	if err != nil {
+		return
+	}
 }
 
 func InstallProduct(product string, version string) {
