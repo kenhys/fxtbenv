@@ -116,6 +116,32 @@ func GetProductVersions(product string) []string {
 	return nil
 }
 
+func GetProductNightlyVersion(product string, version string) string {
+	url := fmt.Sprintf("https://ftp.mozilla.org/pub/%s/nightly/latest-mozilla-central-l10n/", product)
+
+	locale := "en-US"
+	if strings.Contains(version, ":") {
+		verloc := strings.Split(version, ":")
+		version = verloc[0]
+		locale = verloc[1]
+	}
+
+	doc, err := goquery.NewDocument(url)
+	if err != nil {
+		Warning("Failed to fetch nightly page")
+	}
+	doc.Find("a").Each(func(_ int, link *goquery.Selection) {
+		filename := link.Text()
+		suffix := fmt.Sprintf(".%s.linux-x86_64.tar.bz2", locale)
+		if strings.HasSuffix(filename, suffix) {
+			product_version := strings.Split(strings.TrimSuffix(filename, suffix), "-")
+			version = product_version[1]
+		}
+	})
+	Info("nightly", version)
+	return version
+}
+
 func NewFxTbEnv() {
 	homeDir := os.ExpandEnv(`${HOME}`)
 
