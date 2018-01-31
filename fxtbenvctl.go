@@ -133,17 +133,16 @@ func NewFxTbEnv() {
 }
 
 func InstallAutoconfigJsFile(installDir string) {
-	jsPath := fmt.Sprintf("%s/defaults/pref/autoconfig.js", installDir)
-	file, err := os.OpenFile(jsPath, os.O_RDWR|os.O_CREATE, 0600)
+	template := fmt.Sprintf("%s/scripts/autoconfig.js", GetFxTbHomeDirectory())
+	data, err := ioutil.ReadFile(template)
 	if err != nil {
 		return
 	}
-	contents := []string{
-		"pref(\"general.config.filename\", \"autoconfig.cfg\");",
-		"pref(\"general.config.vendor\", \"autoconfig\");",
-		"pref(\"general.config.obscure_value\", 0);",
+	jsPath := fmt.Sprintf("%s/defaults/pref/autoconfig.js", installDir)
+	err = ioutil.WriteFile(jsPath, data, 0644)
+	if err != nil {
+		return
 	}
-	file.WriteString(strings.Join(contents, "\r\n"))
 }
 
 func InstallAutoconfigCfgFile(installDir string) {
