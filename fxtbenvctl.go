@@ -181,7 +181,7 @@ func InstallProduct(product string, version string) {
 			continue
 		}
 		source := fmt.Sprintf("%s/%s/linux-x86_64/%s/%s", base_url, version, locale, filename)
-		fmt.Println(source)
+		Info("Download", source)
 		pwd, _ := os.Getwd()
 		client := &getter.Client{
 			Src:  source,
