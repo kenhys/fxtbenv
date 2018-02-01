@@ -114,6 +114,10 @@ fxtbenv () {
     if [ -z "$FXTBENV_HOME" ]; then
 	export FXTBENV_HOME=$HOME/.fxtbenv
     fi
+    type fxtbenvctl > /dev/null
+    if [ $? -ne 0 ]; then
+	export PATH=$FXTBENV_HOME/bin:$PATH
+    fi
     case $1 in
 	use)
 	    shift
