@@ -33,3 +33,11 @@ func TestGetFxTbProfileDirectory(t *testing.T) {
 	expected := "/tmp/.fxtbenv/firefox/profiles/57:ja@work"
 	assert.Equal(t, GetFxTbProfileDirectory("firefox", "57:ja@work"), expected)
 }
+
+func TestIsInitializedTrue(t *testing.T) {
+	envDir := "/tmp/.fxtbenv"
+	os.Setenv("FXTBENV_HOME", envDir)
+	NewFxTbEnv()
+	assert.Equal(t, IsInitialized(), true)
+}
+
