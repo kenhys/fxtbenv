@@ -24,6 +24,11 @@ function download_product() {
 }
 
 
+if [ $# -ne 2 ]; then
+    echo "Usage: $0 PRODUCT VERSION"
+    echo "$ $0 firefox 57"
+    exit 1
+fi
 # download_product firefox 57
 PRODUCT=$1
 VERSION=$2
