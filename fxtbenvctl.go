@@ -143,7 +143,7 @@ func GetProductNightlyVersion(product string, version string) string {
 }
 
 func NewFxTbEnv() {
-	homeDir := os.ExpandEnv(`${HOME}`)
+	homeDir := os.ExpandEnv(`${FXTBENV_HOME}`)
 
 	envDir := filepath.Join(homeDir, ".fxtbenv")
 	products := []string{"firefox", "thunderbird"}
