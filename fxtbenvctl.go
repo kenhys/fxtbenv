@@ -267,7 +267,7 @@ func InstallProduct(product string, version string) {
 		}
 
 		if err := client.Get(); err != nil {
-			fmt.Println("Error downloading: %s", err)
+			fmt.Println(err)
 		} else {
 			fallback = false
 		}
