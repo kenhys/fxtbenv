@@ -244,12 +244,13 @@ func GetProductSources(product string, version string) []string {
 }
 
 func InstallProduct(product string, version string) {
+	sources := GetProductSources(product, version)
 	locale := "en-US"
 	if strings.Contains(version, ":") {
 		verloc := strings.SplitN(version, ":", 2)
+		version = verloc[0]
 		locale = verloc[1]
 	}
-	sources := GetProductSources(product, version)
 
 	fallback := true
 	for _, source := range sources {
