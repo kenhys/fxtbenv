@@ -230,13 +230,18 @@ func GetNightlyProductUrl(product string, version string, useLocal bool) string 
 	return url
 }
 
-func InstallProduct(product string, version string) {
-	base_urls := []string{}
-	hostEnv := os.ExpandEnv(`${FXTBENV_HOST}`)
-	if hostEnv != "" {
-		base_urls = append(base_urls, fmt.Sprintf("%s/pub/%s/releases", hostEnv, product))
+func GetProductSources(product string, version string) []string {
+	sources := []string{}
+	// version must be "nightly" or actual version string in this context
+	if strings.HasPrefix(version, "nightly") {
+		sources = append(sources, GetNightlyProductUrl(product, version, true))
+		sources = append(sources, GetNightlyProductUrl(product, version, false))
+	} else {
+		sources = append(sources, GetReleaseProductUrl(product, version, true))
+		sources = append(sources, GetReleaseProductUrl(product, version, false))
 	}
-	base_urls = append(base_urls, fmt.Sprintf("https://ftp.mozilla.org/pub/%s/releases", product))
+	return sources
+}
 
 func InstallProduct(product string, version string) {
 	locale := "en-US"
