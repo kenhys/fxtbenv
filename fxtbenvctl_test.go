@@ -13,3 +13,9 @@ func TestDefaultGetFxTbHomeDirectory(t *testing.T) {
 	envDir := filepath.Join(homeDir, ".fxtbenv")
 	assert.Equal(t, GetFxTbHomeDirectory(), envDir)
 }
+
+func TestCustomizedGetFxTbHomeDirectory(t *testing.T) {
+	envDir := "/tmp/.fxtbenv"
+	os.Setenv("FXTBENV_HOME", envDir)
+	assert.Equal(t, GetFxTbHomeDirectory(), envDir)
+}
