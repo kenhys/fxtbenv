@@ -10,6 +10,7 @@ before_install:
   - go get github.com/hashicorp/go-getter
   - go get github.com/hashicorp/go-version
   - go get github.com/urfave/cli
+  - go get github.com/stretchr/testify/assert
 
 script:
   - go test -v ./...
