@@ -19,3 +19,10 @@ func TestCustomizedGetFxTbHomeDirectory(t *testing.T) {
 	os.Setenv("FXTBENV_HOME", envDir)
 	assert.Equal(t, GetFxTbHomeDirectory(), envDir)
 }
+
+func TestGetFxTbProductDirectory(t *testing.T) {
+	envDir := "/tmp/.fxtbenv"
+	os.Setenv("FXTBENV_HOME", envDir)
+	expected := "/tmp/.fxtbenv/firefox/versions/57/ja"
+	assert.Equal(t, GetFxTbProductDirectory("firefox", "57", "ja"), expected)
+}
