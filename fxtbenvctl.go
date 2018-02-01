@@ -332,7 +332,17 @@ func ShowProfiles(products []string) {
 
 		for _, file := range files {
 			if file.IsDir() {
-				fmt.Println(fmt.Sprintf("%11s %s", product, file.Name()))
+				profile := ""
+				if product == "firefox" {
+					profile = os.ExpandEnv(`${FXTBENV_FIREFOX_PROFILE}`)
+				} else if product == "thunderbird" {
+					profile = os.ExpandEnv(`${FXTBENV_THUNDERBIRD_PROFILE}`)
+				}
+				if profile == file.Name() {
+					fmt.Println(fmt.Sprintf("* %s %s", product, file.Name()))
+				} else {
+					fmt.Println(fmt.Sprintf("  %s %s", product, file.Name()))
+				}
 			}
 		}
 	}
