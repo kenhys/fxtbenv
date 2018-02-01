@@ -238,21 +238,19 @@ func InstallProduct(product string, version string) {
 	}
 	base_urls = append(base_urls, fmt.Sprintf("https://ftp.mozilla.org/pub/%s/releases", product))
 
+func InstallProduct(product string, version string) {
 	locale := "en-US"
 	if strings.Contains(version, ":") {
 		verloc := strings.SplitN(version, ":", 2)
-		version = verloc[0]
 		locale = verloc[1]
 	}
-	filename := fmt.Sprintf("%s-%s.tar.bz2", product, version)
-	fmt.Println(filename)
+	sources := GetProductSources(product, version)
 
 	fallback := true
-	for _, base_url := range base_urls {
+	for _, source := range sources {
 		if !fallback {
 			continue
 		}
-		source := fmt.Sprintf("%s/%s/linux-x86_64/%s/%s", base_url, version, locale, filename)
 		Info("Download", source)
 		pwd, _ := os.Getwd()
 		client := &getter.Client{
