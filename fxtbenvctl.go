@@ -207,6 +207,29 @@ func GetReleaseProductUrl(product string, version string, useLocal bool) string 
 	return url
 }
 
+func GetNightlyProductUrl(product string, version string, useLocal bool) string {
+	locale := "en-US"
+	if strings.Contains(version, ":") {
+		verloc := strings.SplitN(version, ":", 2)
+		version = GetProductNightlyVersion(product, version)
+		locale = verloc[1]
+	}
+	baseUrl := ""
+	if useLocal {
+		hostEnv := os.ExpandEnv(`${FXTBENV_HOST}`)
+		if hostEnv != "" {
+			baseUrl = fmt.Sprintf("%s/pub/%s/nightly/latest-mozilla-central-l10n", hostEnv, product)
+		} else {
+			baseUrl = fmt.Sprintf("https://ftp.mozilla.org/pub/%s/nightly/latest-mozilla-central-l10n", product)
+		}
+	} else {
+		baseUrl = fmt.Sprintf("https://ftp.mozilla.org/pub/%s/nightly/latest-mozilla-central-l10n", product)
+	}
+	filename := fmt.Sprintf("%s-%s.%s.linux-x86_64.tar.bz2", product, version, locale)
+	url := fmt.Sprintf("%s/%s", baseUrl, filename)
+	return url
+}
+
 func InstallProduct(product string, version string) {
 	base_urls := []string{}
 	hostEnv := os.ExpandEnv(`${FXTBENV_HOST}`)
