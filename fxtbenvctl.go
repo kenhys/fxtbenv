@@ -144,7 +144,7 @@ func GetProductNightlyVersion(product string, version string) string {
 
 func NewFxTbEnv() {
 	envDir := os.ExpandEnv(`${FXTBENV_HOME}`)
-	if envDir != "" {
+	if envDir == "" {
 		homeDir := os.ExpandEnv(`${HOME}`)
 		envDir = filepath.Join(homeDir, ".fxtbenv")
 	}
