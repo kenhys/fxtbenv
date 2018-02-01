@@ -36,7 +36,7 @@ case $VERSION in
     nightly:*)
 	locale=`echo $VERSION | cut -d':' -f2`
 	filename=`w3m -dump https://ftp.mozilla.org/pub/$PRODUCT/nightly/latest-mozilla-central-l10n/ | cut -d' ' -f2 | \grep ".*\.$locale\.linux-x86_64\.tar\.bz2$" | tail -n1`
-	work="pub/${PRODUCT}/nightly"
+	work="pub/${PRODUCT}/nightly/latest-mozilla-central-l10n"
 	path="$work/$filename"
 	mkdir -p $work
 	if [ ! -f $path ]; then
