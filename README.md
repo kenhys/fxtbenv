@@ -1,4 +1,5 @@
 ![MPL-2.0](https://img.shields.io/badge/License-MPL2.0-green.svg?style=flat)
+[![Build Status](https://travis-ci.org/kenhys/fxtbenv.svg?branch=master)](https://travis-ci.org/kenhys/fxtbenv)
 
 # Fxtbenv
 
