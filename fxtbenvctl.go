@@ -5,7 +5,7 @@ import (
 	"github.com/PuerkitoBio/goquery"
 	"github.com/fatih/color"
 	"github.com/hashicorp/go-getter"
-	version "github.com/hashicorp/go-version"
+	goversion "github.com/hashicorp/go-version"
 	"github.com/urfave/cli"
 	"io/ioutil"
 	"os"
@@ -67,16 +67,16 @@ func IsInitialized() bool {
 }
 
 func GetSortedLabelVersions(labels []string) []string {
-	versions := make([]*version.Version, len(labels))
+	versions := make([]*goversion.Version, len(labels))
 	for i, ver := range labels {
-		v, _ := version.NewVersion(ver)
+		v, _ := goversion.NewVersion(ver)
 		versions[i] = v
 	}
-	sort.Sort(version.Collection(versions))
+	sort.Sort(goversion.Collection(versions))
 	sorted := make([]string, len(labels))
 	for i, v := range versions {
 		for _, label := range labels {
-			v2, _ := version.NewVersion(label)
+			v2, _ := goversion.NewVersion(label)
 			if v.Equal(v2) {
 				sorted[i] = label
 			}
