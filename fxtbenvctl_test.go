@@ -42,3 +42,16 @@ func TestIsInitializedTrue(t *testing.T) {
 	NewFxTbEnv()
 	assert.Equal(t, IsInitialized(), true)
 }
+
+func TestInstallAutoconfigJsFile(t *testing.T) {
+	homeDir, _ := os.Getwd()
+	os.Setenv("FXTBENV_HOME", homeDir)
+	tmpDir, _ := ioutil.TempDir("", "fxtbenv-install-autoconfig-js")
+	installDir := filepath.Join(tmpDir, "defaults/pref")
+	os.MkdirAll(installDir, 0700)
+	InstallAutoconfigJsFile(tmpDir)
+	js := filepath.Join(installDir, "autoconfig.js")
+	_, err := os.Stat(js)
+	assert.Equal(t, !os.IsNotExist(err), true)
+}
+
