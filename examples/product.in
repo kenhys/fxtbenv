@@ -22,22 +22,63 @@ run___PRODUCT__ () {
 
 if [ -f "$RCFILE" ]; then
     line=$(\grep __PRODUCT__ $RCFILE)
-    product=$(echo $line | cut -d'-' -f1)
-    if [ "$product" = "__PRODUCT__" ]; then
-	profile=$(echo $line | cut -d'-' -f2)
-	version=$(echo $profile | cut -d'@' -f1)
-	command=$FXTBENV_HOME/__PRODUCT__/versions/$version/__PRODUCT__
-	profver=$FXTBENV_HOME/__PRODUCT__/profiles/$profile
-	run___PRODUCT__ $command $profver
+    if [ -n "$line" ]; then
+	product=$(echo $line | cut -d'-' -f1)
+	if [ "$product" = "__PRODUCT__" ]; then
+	    profile=$(echo $line | cut -d'-' -f2)
+	    verloc="${profile%@*}"
+	    version="${verloc%:*}"
+	    locale="${verloc#*:}"
+	    if [ -z "$locale" ]; then
+		locale = "en-US"
+	    fi
+	    command=$FXTBENV_HOME/__PRODUCT__/versions/$version/$locale/__PRODUCT__
+	    profver=$FXTBENV_HOME/__PRODUCT__/profiles/$profile
+	    run___PRODUCT__ $command $profver
+	else
+	    echo "Failed to parse configuration file: $RCFILE:"
+	fi
     else
-	echo "Failed to parse configuration file: $RCFILE:"
+	# fxenv or tbenv
+	if [ "__PRODUCT__" = "firefox" ]; then
+	    line=$(\grep fxenv $RCFILE)
+	    if [ -n "$line" ]; then
+		profile=$(echo $line | cut -d' ' -f3)
+		verloc="${profile%@*}"
+		version="${verloc%:*}"
+		locale="${verloc#*:}"
+		if [ -z "$locale" ]; then
+		    locale = "en-US"
+		fi
+		command=$FXTBENV_HOME/__PRODUCT__/versions/$version/$locale/__PRODUCT__
+		profver=$FXTBENV_HOME/__PRODUCT__/profiles/$profile
+		run___PRODUCT__ $command $profver
+	    fi
+	elif [ "__PRODUCT__" = "thunderbird" ]; then
+	    line=$(\grep tbenv $RCFILE)
+	    if [ -n "$line" ]; then
+		profile=$(echo $line | cut -d' ' -f3)
+		verloc="${profile%@*}"
+		version="${verloc%:*}"
+		locale="${verloc#*:}"
+		if [ -z "$locale" ]; then
+		    locale = "en-US"
+		fi
+		command=$FXTBENV_HOME/__PRODUCT__/versions/$version/$locale/__PRODUCT__
+		profver=$FXTBENV_HOME/__PRODUCT__/profiles/$profile
+		run___PRODUCT__ $command $profver
+	    fi
+	fi
     fi
 else
     profile=$FXTBENV___CPRODUCT___PROFILE
     if [ -n "$profile" ]; then
-	verloc=$(echo $profile | cut -d'@' -f1)
-	version=$(echo $verloc | cut -d':' -f1)
-	locale=$(echo $verloc | cut -d':' -f2)
+	verloc="${profile%@*}"
+	version="${verloc%:*}"
+	locale="${verloc#*:}"
+	if [ -z "$locale" ]; then
+	    locale = "en-US"
+	fi
 	command=$FXTBENV_HOME/__PRODUCT__/versions/$version/$locale/__PRODUCT__
 	profdir=$FXTBENV_HOME/__PRODUCT__/profiles/$profile
 	run___PRODUCT__ $command $profdir
