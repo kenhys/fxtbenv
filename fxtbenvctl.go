@@ -303,8 +303,6 @@ func InstallProduct(product string, version string) {
 	version57, _ := goversion.NewVersion("57")
 	if version != "nightly" && productVersion.LessThan(version57) {
 		InstallDOMInspector(productDir, version)
-	} else {
-		EnableBrowserToolbox(productDir)
 	}
 
 	InstallAutoconfigJsFile(productDir)
