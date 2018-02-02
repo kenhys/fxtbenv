@@ -55,3 +55,12 @@ func TestInstallAutoconfigJsFile(t *testing.T) {
 	assert.Equal(t, !os.IsNotExist(err), true)
 }
 
+func TestInstallAutoconfigCfgFile(t *testing.T) {
+	homeDir, _ := os.Getwd()
+	os.Setenv("FXTBENV_HOME", homeDir)
+	tmpDir, _ := ioutil.TempDir("", "fxtbenv-install-autoconfig-cfg")
+	InstallAutoconfigCfgFile(tmpDir)
+	js := filepath.Join(tmpDir, "autoconfig.cfg")
+	_, err := os.Stat(js)
+	assert.Equal(t, !os.IsNotExist(err), true)
+}
