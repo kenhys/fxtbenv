@@ -12,11 +12,13 @@ scripts: fxtbenvctl
 		examples/product.in > bin/thunderbird
 	chmod +x bin/thunderbird
 
-fxtbenvctl:
+depends:
 	go get github.com/PuerkitoBio/goquery
 	go get github.com/fatih/color
 	go get github.com/hashicorp/go-getter
 	go get github.com/hashicorp/go-version
 	go get github.com/urfave/cli
+
+fxtbenvctl:
 	go build -o bin/fxtbenvctl fxtbenvctl.go
 
