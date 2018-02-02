@@ -279,6 +279,16 @@ func InstallProduct(product string, version string) {
 	os.MkdirAll(filepath.Dir(productDir), 0700)
 	os.Rename(fmt.Sprintf("tmp/%s", product), productDir)
 
+	// Install DOM Inspector legacy Firefox (older than 57).
+	// https://addons.mozilla.org/firefox/downloads/file/324966/dom_inspector-2.0.16-sm+fn+tb+fx.xpi
+	// as inspector@mozilla.org.xpi
+
+	if version != "nightly" && version.NewVersion(version).LessThan(version.NewVersion("57")) {
+		InstallDOMInspector(productDir, version)
+	} else {
+		EnableBrowserToolbox(productDir)
+	}
+
 	InstallAutoconfigJsFile(productDir)
 	InstallAutoconfigCfgFile(productDir)
 }
