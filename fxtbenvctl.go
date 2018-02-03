@@ -246,6 +246,12 @@ func GetProductSources(product string, version string) []string {
 }
 
 func InstallDOMInspector(productDir string, version string) {
+	productVersion, _ := goversion.NewVersion(version)
+	version57, _ := goversion.NewVersion("57")
+	if version == "nightly" || productVersion.GreaterThan(version57) {
+		return
+	}
+
 	// Install DOM Inspector legacy Firefox (older than 57).
 	// https://addons.mozilla.org/firefox/downloads/file/324966/dom_inspector-2.0.16-sm+fn+tb+fx.xpi
 	// as inspector@mozilla.org.xpi
