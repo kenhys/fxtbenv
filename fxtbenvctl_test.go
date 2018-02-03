@@ -92,3 +92,14 @@ func TestNoInstallDOMInspector(t *testing.T) {
 	_, err := os.Stat(xpi)
 	assert.True(t, os.IsNotExist(err))
 }
+
+func TestInstallProduct(t *testing.T) {
+	homeDir := SetupTmpDir("fxtbenv-install-firefox")
+	os.Setenv("FXTBENV_HOME", homeDir)
+	installDir := GetFxTbProductDirectory("firefox", "57.0", "en-US")
+	InstallProduct("firefox", "57.0")
+	firefox := filepath.Join(installDir, "firefox")
+	_, err := os.Stat(firefox)
+	assert.False(t, os.IsNotExist(err))
+}
+
