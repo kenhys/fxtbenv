@@ -248,7 +248,7 @@ func GetProductSources(product string, version string) []string {
 func InstallDOMInspector(productDir string, version string) {
 	productVersion, _ := goversion.NewVersion(version)
 	version57, _ := goversion.NewVersion("57")
-	if version == "nightly" || productVersion.GreaterThan(version57) {
+	if version == "nightly" || productVersion.GreaterThan(version57) || productVersion.Equal(version57) {
 		return
 	}
 
