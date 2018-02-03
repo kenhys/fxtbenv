@@ -8,10 +8,10 @@ import (
 	"testing"
 )
 
-func SetupTmpHomeDir(message string) string {
-	homeDir, _ := ioutil.TempDir("", message)
-	defer os.RemoveAll(homeDir)
-	return homeDir
+func SetupTmpDir(message string) string {
+	tmpDir, _ := ioutil.TempDir("", message)
+	defer os.RemoveAll(tmpDir)
+	return tmpDir
 }
 
 func TestDefaultGetFxTbHomeDirectory(t *testing.T) {
