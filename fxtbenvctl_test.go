@@ -22,28 +22,27 @@ func TestDefaultGetFxTbHomeDirectory(t *testing.T) {
 }
 
 func TestCustomizedGetFxTbHomeDirectory(t *testing.T) {
-	homeDir, _ := ioutil.TempDir("", "fxtbenv-home-directory")
+	homeDir := SetupTmpDir("fxtbenv-home-directory")
 	os.Setenv("FXTBENV_HOME", homeDir)
 	assert.Equal(t, GetFxTbHomeDirectory(), homeDir)
 }
 
 func TestGetFxTbProductDirectory(t *testing.T) {
-	homeDir, _ := ioutil.TempDir("", "fxtbenv-product")
+	homeDir := SetupTmpDir("fxtbenv-product")
 	os.Setenv("FXTBENV_HOME", homeDir)
 	expected := filepath.Join(homeDir, "firefox/versions/57/ja")
 	assert.Equal(t, GetFxTbProductDirectory("firefox", "57", "ja"), expected)
 }
 
 func TestGetFxTbProfileDirectory(t *testing.T) {
-	homeDir, _ := ioutil.TempDir("", "fxtbenv-profile")
+	homeDir := SetupTmpDir("fxtbenv-profile")
 	os.Setenv("FXTBENV_HOME", homeDir)
 	expected := filepath.Join(homeDir, "firefox/profiles/57:ja@work")
 	assert.Equal(t, GetFxTbProfileDirectory("firefox", "57:ja@work"), expected)
 }
 
 func TestIsInitializedTrue(t *testing.T) {
-	homeDir, _ := ioutil.TempDir("", "fxtbenv-is-initialized")
-	defer os.RemoveAll(homeDir)
+	homeDir := SetupTmpDir("fxtbenv-is-initialized")
 	os.Setenv("FXTBENV_HOME", homeDir)
 	NewFxTbEnv()
 	assert.Equal(t, IsInitialized(), true)
@@ -52,7 +51,7 @@ func TestIsInitializedTrue(t *testing.T) {
 func TestInstallAutoconfigJsFile(t *testing.T) {
 	homeDir, _ := os.Getwd()
 	os.Setenv("FXTBENV_HOME", homeDir)
-	tmpDir, _ := ioutil.TempDir("", "fxtbenv-install-autoconfig-js")
+	tmpDir := SetupTmpDir("fxtbenv-install-autoconfig-js")
 	installDir := filepath.Join(tmpDir, "defaults/pref")
 	os.MkdirAll(installDir, 0700)
 	InstallAutoconfigJsFile(tmpDir)
@@ -72,7 +71,7 @@ func TestInstallAutoconfigCfgFile(t *testing.T) {
 }
 
 func TestInstallDOMInspector(t *testing.T) {
-	homeDir := SetupTmpHomeDir("fxtbenv-install-dominspector")
+	homeDir := SetupTmpDir("fxtbenv-install-dominspector")
 	os.Setenv("FXTBENV_HOME", homeDir)
 	version := "56"
 	installDir := GetFxTbProductDirectory("firefox", version, "ja")
@@ -83,7 +82,7 @@ func TestInstallDOMInspector(t *testing.T) {
 }
 
 func TestNoInstallDOMInspector(t *testing.T) {
-	homeDir := SetupTmpHomeDir("fxtbenv-install-dominspector")
+	homeDir := SetupTmpDir("fxtbenv-not-install-dominspector")
 	os.Setenv("FXTBENV_HOME", homeDir)
 	version := "57"
 	installDir := GetFxTbProductDirectory("firefox", version, "ja")
