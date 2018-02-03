@@ -70,3 +70,25 @@ func TestInstallAutoconfigCfgFile(t *testing.T) {
 	_, err := os.Stat(js)
 	assert.Equal(t, !os.IsNotExist(err), true)
 }
+
+func TestInstallDOMInspector(t *testing.T) {
+	homeDir := SetupTmpHomeDir("fxtbenv-install-dominspector")
+	os.Setenv("FXTBENV_HOME", homeDir)
+	version := "56"
+	installDir := GetFxTbProductDirectory("firefox", version, "ja")
+	InstallDOMInspector(installDir, version)
+	xpi := filepath.Join(installDir, "browser/extensions/inspector@mozilla.org.xpi")
+	_, err := os.Stat(xpi)
+	assert.False(t, os.IsNotExist(err))
+}
+
+func TestNoInstallDOMInspector(t *testing.T) {
+	homeDir := SetupTmpHomeDir("fxtbenv-install-dominspector")
+	os.Setenv("FXTBENV_HOME", homeDir)
+	version := "57"
+	installDir := GetFxTbProductDirectory("firefox", version, "ja")
+	InstallDOMInspector(installDir, version)
+	xpi := filepath.Join(installDir, "browser/extensions/inspector@mozilla.org.xpi")
+	_, err := os.Stat(xpi)
+	assert.True(t, os.IsNotExist(err))
+}
