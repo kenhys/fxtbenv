@@ -57,7 +57,7 @@ func TestInstallAutoconfigJsFile(t *testing.T) {
 	InstallAutoconfigJsFile(tmpDir)
 	js := filepath.Join(installDir, "autoconfig.js")
 	_, err := os.Stat(js)
-	assert.Equal(t, !os.IsNotExist(err), true)
+	assert.False(t, os.IsNotExist(err))
 }
 
 func TestInstallAutoconfigCfgFile(t *testing.T) {
