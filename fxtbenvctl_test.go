@@ -63,11 +63,12 @@ func TestInstallAutoconfigJsFile(t *testing.T) {
 func TestInstallAutoconfigCfgFile(t *testing.T) {
 	homeDir, _ := os.Getwd()
 	os.Setenv("FXTBENV_HOME", homeDir)
-	tmpDir, _ := ioutil.TempDir("", "fxtbenv-install-autoconfig-cfg")
-	InstallAutoconfigCfgFile(tmpDir)
-	js := filepath.Join(tmpDir, "autoconfig.cfg")
-	_, err := os.Stat(js)
-	assert.Equal(t, !os.IsNotExist(err), true)
+	installDir := SetupTmpDir("fxtbenv-install-autoconfig-cfg")
+	os.MkdirAll(installDir, 0700)
+	InstallAutoconfigCfgFile(installDir)
+	cfg := filepath.Join(installDir, "autoconfig.cfg")
+	_, err := os.Stat(cfg)
+	assert.False(t, os.IsNotExist(err))
 }
 
 func TestInstallDOMInspector(t *testing.T) {
