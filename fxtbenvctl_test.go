@@ -8,6 +8,12 @@ import (
 	"testing"
 )
 
+func SetupTmpHomeDir(message string) string {
+	homeDir, _ := ioutil.TempDir("", message)
+	defer os.RemoveAll(homeDir)
+	return homeDir
+}
+
 func TestDefaultGetFxTbHomeDirectory(t *testing.T) {
 	os.Setenv("FXTBENV_HOME", "")
 	homeDir := os.ExpandEnv(`${HOME}`)
