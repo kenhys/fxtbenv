@@ -589,6 +589,8 @@ func main() {
 					if err != nil {
 						Warning(fmt.Sprintf("specified %s %s %s is not installed", product, version, locale), c.Args()...)
 						os.Exit(1)
+					} else {
+						Info("path", filepath.Join(productDir, "firefox"))
 					}
 					profileDir := GetFxTbProfileDirectory(product, profver)
 					stat, err = os.Stat(profileDir)
@@ -604,6 +606,8 @@ func main() {
 						if !stat.IsDir() {
 							Warning("invalid profile directory", c.Args()...)
 							os.Exit(1)
+						} else {
+							Info("profile", profileDir)
 						}
 					}
 				}
