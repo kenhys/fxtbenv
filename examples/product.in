@@ -11,12 +11,12 @@ run___PRODUCT__ () {
 	echo "No such __PRODUCT__: $command"
 	echo "Install __PRODUCT__ $version by 'fxtbenv install __PRODUCT__ $version'"
     else
-	echo "$command -no-remote -profile $profver"
+	echo "$command $FXTBENV___CPRODUCT___OPTIONS -no-remote -profile $profver"
 	if [ ! -d "$profver" ]; then
 	    echo "Creating profile directory: $profver"
 	    mkdir -p $profver
 	fi
-	$command -no-remote -profile $profver
+	$command $FXTBENV___CPRODUCT___OPTIONS -no-remote -profile $profver
     fi
 }
 
