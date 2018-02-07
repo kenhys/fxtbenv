@@ -582,6 +582,17 @@ func uninstallProductAction(c *cli.Context, product string) {
 	fmt.Println(`uninstall ${strings.ToLower(product)}:`, c.Args().First())
 }
 
+func removeAction(c *cli.Context, product string) {
+	profile := c.String("profile")
+	if profile != "" {
+		targetDir := GetFxTbProfileDirectory(strings.ToLower(product), profile)
+		Info("Removing profile directory:", targetDir)
+		if err := os.RemoveAll(targetDir); err != nil {
+			Warning(`Failed to remove ${targetDir}`)
+		}
+	}
+}
+
 func main() {
 	app := cli.NewApp()
 	app.Name = "fxtbenv"
@@ -685,6 +696,39 @@ func main() {
 			Action: func(c *cli.Context) error {
 				openAction(c)
 				return nil
+			},
+		},
+		{
+			Name:    "remove",
+			Aliases: []string{"r"},
+			Usage:   "Remove specific product",
+			Subcommands: []cli.Command{
+				{
+					Name:    "firefox",
+					Aliases: []string{"fx"},
+					Usage:   "Remove Firefox",
+					Flags: []cli.Flag{
+						cli.BoolFlag{Name: "force, f"},
+						cli.StringFlag{Name: "profile, p"},
+					},
+					Action: func(c *cli.Context) error {
+						removeAction(c, "Firefox")
+						return nil
+					},
+				},
+				{
+					Name:    "thunderbird",
+					Aliases: []string{"tb"},
+					Usage:   "Remove Thunderbird",
+					Flags: []cli.Flag{
+						cli.BoolFlag{Name: "force, f"},
+						cli.StringFlag{Name: "profile, p"},
+					},
+					Action: func(c *cli.Context) error {
+						removeAction(c, "Thunderbird")
+						return nil
+					},
+				},
 			},
 		},
 	}
