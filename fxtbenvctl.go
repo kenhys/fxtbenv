@@ -541,6 +541,21 @@ func useAtion(c *cli.Context) {
 	}
 }
 
+func openAction(c *cli.Context) {
+	Debug("arg", c.Args()...)
+	if c.NArg() == 0 {
+		Warning("missing product", c.Args()...)
+	} else if c.NArg() == 1 {
+		if c.Bool("profile") {
+			OpenProfileDirectory(c.Args().First())
+		} else {
+			OpenProductDirectory(c.Args().First())
+		}
+	} else {
+		Warning("too much arguments", c.Args()...)
+	}
+}
+
 func main() {
 	app := cli.NewApp()
 	app.Name = "fxtbenv"
@@ -678,18 +693,7 @@ func main() {
 				cli.BoolFlag{Name: "profile, p"},
 			},
 			Action: func(c *cli.Context) error {
-				Debug("arg", c.Args()...)
-				if c.NArg() == 0 {
-					Warning("missing product", c.Args()...)
-				} else if c.NArg() == 1 {
-					if c.Bool("profile") {
-						OpenProfileDirectory(c.Args().First())
-					} else {
-						OpenProductDirectory(c.Args().First())
-					}
-				} else {
-					Warning("too much arguments", c.Args()...)
-				}
+				openAction(c)
 				return nil
 			},
 		},
