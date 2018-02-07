@@ -556,6 +556,21 @@ func openAction(c *cli.Context) {
 	}
 }
 
+func installProductAction(c *cli.Context, product string) {
+	if c.Bool("list") {
+		GetProductVersions(strings.ToLower(product))
+	}
+	if c.NArg() == 0 {
+		fmt.Println(fmt.Errorf("Specify ${product} version for install ${strings.ToLower(product)} subcommand:"))
+		os.Exit(1)
+	}
+	if !IsInitialized() {
+		NewFxTbEnv()
+	}
+	InstallProduct(strings.ToLower(product), c.Args().First())
+	fmt.Println(`install ${strings.ToLower(product)}:`, c.Args().First())
+}
+
 func main() {
 	app := cli.NewApp()
 	app.Name = "fxtbenv"
@@ -576,18 +591,7 @@ func main() {
 						cli.BoolFlag{Name: "list, l"},
 					},
 					Action: func(c *cli.Context) error {
-						if c.Bool("list") {
-							GetProductVersions("firefox")
-						}
-						if c.NArg() == 0 {
-							fmt.Println(fmt.Errorf("Specify Firefox version for install firefox subcommand:"))
-							os.Exit(1)
-						}
-						if !IsInitialized() {
-							NewFxTbEnv()
-						}
-						InstallProduct("firefox", c.Args().First())
-						fmt.Println("install fx:", c.Args().First())
+						installProductAction(c, "Firefox")
 						return nil
 					},
 				},
@@ -599,18 +603,7 @@ func main() {
 						cli.BoolFlag{Name: "list, l"},
 					},
 					Action: func(c *cli.Context) error {
-						if c.Bool("list") {
-							GetProductVersions("thunderbird")
-						}
-						if c.NArg() == 0 {
-							fmt.Println(fmt.Errorf("Specify Thunderbird version"))
-							os.Exit(1)
-						}
-						if !IsInitialized() {
-							NewFxTbEnv()
-						}
-						InstallProduct("thunderbird", c.Args().First())
-						fmt.Println("fxtb install tb:", c.Args().First())
+						installProductAction(c, "Thunderbird")
 						return nil
 					},
 				},
