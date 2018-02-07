@@ -9,7 +9,9 @@ import (
 	"github.com/urfave/cli"
 	"io/ioutil"
 	"os"
+	"os/exec"
 	"path/filepath"
+	"regexp"
 	"sort"
 	"strings"
 )
@@ -434,6 +436,32 @@ func ParseProfileString(argument string) (string, string, string, string, error)
 		locale = verloc[1]
 	}
 	return product, version, locale, profver, nil
+}
+
+func OpenProductDirectory(product string) {
+	command := os.ExpandEnv(`${FXTBENV_FILER}`)
+	if command == "" {
+		command = "nautilus"
+	}
+	targetDir := ""
+	version := ""
+	locale := ""
+	profile := ""
+	if product == "firefox" {
+		profile = os.ExpandEnv(`${FXTBENV_FIREFOX_PROFILE}`)
+	} else if product == "thunderbird" {
+		profile = os.ExpandEnv(`${FXTBENV_THUDERBIRD_PROFILE}`)
+	} else {
+	}
+	r := regexp.MustCompile(`(.+):(.+)@(.+)$`)
+	result := r.FindAllStringSubmatch(profile, -1)
+	version = result[0][1]
+	locale = result[0][2]
+	targetDir = GetFxTbProductDirectory(product, version, locale)
+	err := exec.Command(command, targetDir).Start()
+	if err != nil {
+		Warning(`Failed to launch ${command}`)
+	}
 }
 
 func main() {
