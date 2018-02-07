@@ -500,7 +500,7 @@ func listAction(c *cli.Context) {
 	}
 }
 
-func useAtion(c *cli.Context) {
+func useAction(c *cli.Context) {
 	Debug("arg", c.Args()...)
 	if c.NArg() == 0 {
 		ShowInstalledProduct([]string{"firefox", "thunderbird"})
