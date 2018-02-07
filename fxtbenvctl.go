@@ -464,6 +464,26 @@ func OpenProductDirectory(product string) {
 	}
 }
 
+func OpenProfileDirectory(product string) {
+	command := os.ExpandEnv(`${FXTBENV_FILER}`)
+	if command == "" {
+		command = "nautilus"
+	}
+	targetDir := ""
+	profile := ""
+	if product == "firefox" {
+		profile = os.ExpandEnv(`${FXTBENV_FIREFOX_PROFILE}`)
+	} else if product == "thunderbird" {
+		profile = os.ExpandEnv(`${FXTBENV_THUDERBIRD_PROFILE}`)
+	} else {
+	}
+	targetDir = GetFxTbProfileDirectory(product, profile)
+	err := exec.Command(command, targetDir).Start()
+	if err != nil {
+		Warning(`Failed to launch ${command}`)
+	}
+}
+
 func main() {
 	app := cli.NewApp()
 	app.Name = "fxtbenv"
