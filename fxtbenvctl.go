@@ -500,6 +500,47 @@ func listAction(c *cli.Context) {
 	}
 }
 
+func useAtion(c *cli.Context) {
+	Debug("arg", c.Args()...)
+	if c.NArg() == 0 {
+		ShowInstalledProduct([]string{"firefox", "thunderbird"})
+	} else if c.NArg() > 1 {
+		Warning("too much arguments", c.Args()...)
+	} else {
+		product, version, locale, profver, err := ParseProfileString(c.Args().First())
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+		productDir := GetFxTbProductDirectory(product, version, locale)
+		stat, err := os.Stat(productDir)
+		if err != nil {
+			Warning(fmt.Sprintf("specified %s %s %s is not installed", product, version, locale), c.Args()...)
+			os.Exit(1)
+		} else {
+			Info("path", filepath.Join(productDir, "firefox"))
+		}
+		profileDir := GetFxTbProfileDirectory(product, profver)
+		stat, err = os.Stat(profileDir)
+		if err != nil {
+			if c.Bool("create") {
+				Info("creating", profileDir)
+				os.MkdirAll(profileDir, 0700)
+			} else {
+				Warning("missing profile directory", c.Args()...)
+				os.Exit(1)
+			}
+		} else {
+			if !stat.IsDir() {
+				Warning("invalid profile directory", c.Args()...)
+				os.Exit(1)
+			} else {
+				Info("profile", profileDir)
+			}
+		}
+	}
+}
+
 func main() {
 	app := cli.NewApp()
 	app.Name = "fxtbenv"
@@ -625,44 +666,7 @@ func main() {
 				cli.BoolFlag{Name: "create, c"},
 			},
 			Action: func(c *cli.Context) error {
-				Debug("arg", c.Args()...)
-				if c.NArg() == 0 {
-					ShowInstalledProduct([]string{"firefox", "thunderbird"})
-				} else if c.NArg() > 1 {
-					Warning("too much arguments", c.Args()...)
-				} else {
-					product, version, locale, profver, err := ParseProfileString(c.Args().First())
-					if err != nil {
-						fmt.Println(err)
-						os.Exit(1)
-					}
-					productDir := GetFxTbProductDirectory(product, version, locale)
-					stat, err := os.Stat(productDir)
-					if err != nil {
-						Warning(fmt.Sprintf("specified %s %s %s is not installed", product, version, locale), c.Args()...)
-						os.Exit(1)
-					} else {
-						Info("path", filepath.Join(productDir, "firefox"))
-					}
-					profileDir := GetFxTbProfileDirectory(product, profver)
-					stat, err = os.Stat(profileDir)
-					if err != nil {
-						if c.Bool("create") {
-							Info("creating", profileDir)
-							os.MkdirAll(profileDir, 0700)
-						} else {
-							Warning("missing profile directory", c.Args()...)
-							os.Exit(1)
-						}
-					} else {
-						if !stat.IsDir() {
-							Warning("invalid profile directory", c.Args()...)
-							os.Exit(1)
-						} else {
-							Info("profile", profileDir)
-						}
-					}
-				}
+				useAction(c)
 				return nil
 			},
 		},
