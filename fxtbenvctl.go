@@ -662,6 +662,29 @@ func main() {
 				return nil
 			},
 		},
+		{
+			Name:    "open",
+			Aliases: []string{"o"},
+			Usage:   "Open specific directory",
+			Flags: []cli.Flag{
+				cli.BoolFlag{Name: "profile, p"},
+			},
+			Action: func(c *cli.Context) error {
+				Debug("arg", c.Args()...)
+				if c.NArg() == 0 {
+					Warning("missing product", c.Args()...)
+				} else if c.NArg() == 1 {
+					if c.Bool("profile") {
+						OpenProfileDirectory(c.Args().First())
+					} else {
+						OpenProductDirectory(c.Args().First())
+					}
+				} else {
+					Warning("too much arguments", c.Args()...)
+				}
+				return nil
+			},
+		},
 	}
 	app.Run(os.Args)
 }
