@@ -484,6 +484,22 @@ func OpenProfileDirectory(product string) {
 	}
 }
 
+func listAction(c *cli.Context) {
+	if c.NArg() == 0 {
+		if c.Bool("profile") {
+			ShowProfiles([]string{"firefox", "thunderbird"})
+		} else {
+			ShowInstalledProduct([]string{"firefox", "thunderbird"})
+		}
+	} else {
+		if c.Bool("profile") {
+			ShowProfiles(c.Args())
+		} else {
+			ShowInstalledProduct(c.Args())
+		}
+	}
+}
+
 func main() {
 	app := cli.NewApp()
 	app.Name = "fxtbenv"
@@ -597,19 +613,7 @@ func main() {
 				cli.BoolFlag{Name: "profile, p"},
 			},
 			Action: func(c *cli.Context) error {
-				if c.NArg() == 0 {
-					if c.Bool("profile") {
-						ShowProfiles([]string{"firefox", "thunderbird"})
-					} else {
-						ShowInstalledProduct([]string{"firefox", "thunderbird"})
-					}
-				} else {
-					if c.Bool("profile") {
-						ShowProfiles(c.Args())
-					} else {
-						ShowInstalledProduct(c.Args())
-					}
-				}
+				listAction(c)
 				return nil
 			},
 		},
