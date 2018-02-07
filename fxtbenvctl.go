@@ -571,6 +571,17 @@ func installProductAction(c *cli.Context, product string) {
 	fmt.Println(`install ${strings.ToLower(product)}:`, c.Args().First())
 }
 
+func uninstallProductAction(c *cli.Context, product string) {
+	if c.Bool("force") {
+	}
+	if c.NArg() == 0 {
+		fmt.Println(fmt.Errorf(`Specify ${product} version to uninstall it.`))
+		os.Exit(1)
+	}
+	UninstallProduct(strings.ToLower(product), c.Args().First())
+	fmt.Println(`uninstall ${strings.ToLower(product)}:`, c.Args().First())
+}
+
 func main() {
 	app := cli.NewApp()
 	app.Name = "fxtbenv"
@@ -622,14 +633,7 @@ func main() {
 						cli.BoolFlag{Name: "force, f"},
 					},
 					Action: func(c *cli.Context) error {
-						if c.Bool("force") {
-						}
-						if c.NArg() == 0 {
-							fmt.Println(fmt.Errorf("Specify Firefox version to uninstall it."))
-							os.Exit(1)
-						}
-						UninstallProduct("firefox", c.Args().First())
-						fmt.Println("uinstall firefox:", c.Args().First())
+						uninstallProductAction(c, "Firefox")
 						return nil
 					},
 				},
@@ -641,14 +645,7 @@ func main() {
 						cli.BoolFlag{Name: "force, f"},
 					},
 					Action: func(c *cli.Context) error {
-						if c.Bool("force") {
-						}
-						if c.NArg() == 0 {
-							fmt.Println(fmt.Errorf("Specify Thunderbird version to uninstall it."))
-							os.Exit(1)
-						}
-						UninstallProduct("thunderbird", c.Args().First())
-						fmt.Println("uninstall thunderbird:", c.Args().First())
+						uninstallProductAction(c, "Thunderbird")
 						return nil
 					},
 				},
