@@ -566,7 +566,7 @@ func installProductAction(c *cli.Context, product string) {
 		NewFxTbEnv()
 	}
 	InstallProduct(strings.ToLower(product), c.Args().First())
-	fmt.Println(`install ${strings.ToLower(product)}:`, c.Args().First())
+	Info(`Install ${strings.ToLower(product)}:`, c.Args().First())
 }
 
 func uninstallProductAction(c *cli.Context, product string) {
@@ -577,7 +577,7 @@ func uninstallProductAction(c *cli.Context, product string) {
 		os.Exit(1)
 	}
 	UninstallProduct(strings.ToLower(product), c.Args().First())
-	fmt.Println(`uninstall ${strings.ToLower(product)}:`, c.Args().First())
+	Info(`Uninstall ${strings.ToLower(product)}:`, c.Args().First())
 }
 
 func removeAction(c *cli.Context, product string) {
