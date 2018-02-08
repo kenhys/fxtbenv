@@ -112,3 +112,23 @@ func TestInstallLocalizedProduct(t *testing.T) {
 	_, err := os.Stat(firefox)
 	assert.False(t, os.IsNotExist(err))
 }
+
+func TestUnInstallProduct(t *testing.T) {
+	homeDir := SetupTmpDir("fxtbenv-install-firefox")
+	os.Setenv("FXTBENV_HOME", homeDir)
+	installDir := GetFxTbProductDirectory("firefox", "57.0", "en-US")
+	os.MkdirAll(installDir, 0700)
+	UninstallProduct("firefox", "57.0")
+	_, err := os.Stat(installDir)
+	assert.True(t, os.IsNotExist(err))
+}
+
+func TestUnInstallLocalizedProduct(t *testing.T) {
+	homeDir := SetupTmpDir("fxtbenv-install-firefox")
+	os.Setenv("FXTBENV_HOME", homeDir)
+	installDir := GetFxTbProductDirectory("firefox", "57.0", "ja")
+	os.MkdirAll(installDir, 0700)
+	UninstallProduct("firefox", "57.0:ja")
+	_, err := os.Stat(installDir)
+	assert.True(t, os.IsNotExist(err))
+}
