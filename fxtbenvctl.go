@@ -501,7 +501,6 @@ func listAction(c *cli.Context) {
 }
 
 func useAction(c *cli.Context) {
-	Debug("arg", c.Args()...)
 	if c.NArg() == 0 {
 		ShowInstalledProduct([]string{"firefox", "thunderbird"})
 	} else if c.NArg() > 1 {
@@ -542,7 +541,6 @@ func useAction(c *cli.Context) {
 }
 
 func openAction(c *cli.Context) {
-	Debug("arg", c.Args()...)
 	if c.NArg() == 0 {
 		Warning("missing product", c.Args()...)
 	} else if c.NArg() == 1 {
