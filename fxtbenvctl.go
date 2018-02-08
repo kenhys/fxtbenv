@@ -87,7 +87,23 @@ func GetSortedLabelVersions(labels []string) []string {
 	return sorted
 }
 
-func GetProductVersions(product string) []string {
+func ShowProductVersions(branches map[string][]string) {
+	keys := []string{}
+	for key, _ := range branches {
+		if key != "devpreview" && key != "shiretoko" {
+			keys = append(keys, key)
+		}
+	}
+	keyVersions := GetSortedLabelVersions(keys)
+
+	for _, key := range keyVersions {
+		versions := GetSortedLabelVersions(branches[key])
+		fmt.Print(fmt.Sprintf("%s ", strings.Split(versions[0], ".")[0]))
+		fmt.Println(versions)
+	}
+}
+
+func GetProductVersions(product string) map[string][]string {
 	url := fmt.Sprintf("https://ftp.mozilla.org/pub/%s/releases/", product)
 
 	doc, err := goquery.NewDocument(url)
@@ -102,20 +118,7 @@ func GetProductVersions(product string) []string {
 			branches[key] = append(branches[key], label)
 		}
 	})
-	keys := []string{}
-	for key, _ := range branches {
-		if key != "devpreview" && key != "shiretoko" {
-			keys = append(keys, key)
-		}
-	}
-	keyVersions := GetSortedLabelVersions(keys)
-
-	for _, key := range keyVersions {
-		versions := GetSortedLabelVersions(branches[key])
-		fmt.Print(fmt.Sprintf("%s ", strings.Split(versions[0], ".")[0]))
-		fmt.Println(versions)
-	}
-	return nil
+	return branches
 }
 
 func GetProductNightlyVersion(product string, version string) string {
@@ -561,7 +564,7 @@ func openAction(c *cli.Context) {
 
 func installProductAction(c *cli.Context, product string) {
 	if c.Bool("list") {
-		GetProductVersions(strings.ToLower(product))
+		ShowProductVersions(GetProductVersions(strings.ToLower(product)))
 	}
 	if c.NArg() == 0 {
 		fmt.Println(fmt.Errorf("Specify ${product} version for install ${strings.ToLower(product)} subcommand:"))
