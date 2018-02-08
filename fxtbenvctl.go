@@ -629,18 +629,34 @@ func mirrorAction(c *cli.Context, product string) {
 	}
 	os.MkdirAll(rootDir, 0700)
 	// Fetch version list
+	Debug("Product", product)
+	branches := GetProductVersions(strings.ToLower(product))
+
 	for _, verloc := range c.Args() {
 		version, locale := ParseVersionLocaleString(verloc)
-		path := fmt.Sprintf("pub/%s/releases/%s/linux-x86_64/%s", strings.ToLower(product), version, locale)
-		filename := fmt.Sprintf("%s-%s.tar.bz2", strings.ToLower(product), version)
-		source := fmt.Sprintf("https://ftp.mozilla.org/%s/%s", path, filename)
-		targetDir := filepath.Join(rootDir, path)
-		os.MkdirAll(targetDir, 0700)
-		destination := filepath.Join(targetDir, filename)
-		DownloadFile(source, destination)
+		versions := []string{}
+		for key, _ := range branches {
+			Debug("Mirror key", key)
+			if key == version {
+				Debug("Match key", key)
+				versions = branches[key]
+			}
+		}
+		if len(versions) == 0 {
+			Debug("Mirror oneshot", version)
+			versions = append(versions, version)
+		}
+		for _, version := range versions {
+			path := fmt.Sprintf("pub/%s/releases/%s/linux-x86_64/%s", strings.ToLower(product), version, locale)
+			filename := fmt.Sprintf("%s-%s.tar.bz2", strings.ToLower(product), version)
+			source := fmt.Sprintf("https://ftp.mozilla.org/%s/%s", path, filename)
+			targetDir := filepath.Join(rootDir, path)
+			os.MkdirAll(targetDir, 0700)
+			destination := filepath.Join(targetDir, filename)
+			DownloadFile(source, destination)
+		}
 	}
 }
-
 
 func main() {
 	app := cli.NewApp()
