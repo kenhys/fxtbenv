@@ -591,6 +591,24 @@ func removeAction(c *cli.Context, product string) {
 	}
 }
 
+func DownloadFile(source string, destination string) {
+	Debug("source", source)
+	Debug("destination", destination)
+	pwd, _ := os.Getwd()
+	url := fmt.Sprintf("%s?archive=false", source)
+	Info("Download", url)
+	client := &getter.Client{
+		Src:  url,
+		Dst:  destination,
+		Pwd:  pwd,
+		Mode: getter.ClientModeFile,
+	}
+	if err := client.Get(); err != nil {
+		Warning("Failed to download", destination)
+		fmt.Println(err)
+	}
+}
+
 func mirrorAction(c *cli.Context, product string) {
 	rootDir := ""
 	root := os.ExpandEnv(`${FXTBENV_MIRROR_ROOT}`)
