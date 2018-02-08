@@ -257,20 +257,11 @@ func InstallDOMInspector(productDir string, version string) {
 	// Install DOM Inspector legacy Firefox (older than 57).
 	// https://addons.mozilla.org/firefox/downloads/file/324966/dom_inspector-2.0.16-sm+fn+tb+fx.xpi
 	// as inspector@mozilla.org.xpi
-	pwd, _ := os.Getwd()
 	source := "https://addons.mozilla.org/firefox/downloads/file/324966/dom_inspector-2.0.16-sm+fn+tb+fx.xpi"
 	Info("Download", source)
 	xpi := filepath.Join(productDir, "browser/extensions/inspector@mozilla.org.xpi")
 	Info("Install to", xpi)
-	client := &getter.Client{
-		Src:  source,
-		Dst:  xpi,
-		Pwd:  pwd,
-		Mode: getter.ClientModeFile,
-	}
-	if err := client.Get(); err != nil {
-		fmt.Println(err)
-	}
+	DownloadFile(source, xpi)
 }
 
 func InstallProduct(product string, version string) {
