@@ -404,6 +404,20 @@ func FxtbWErrorf(format string, value string) error {
 		info("fxtbenv"), warn("warning"), format, value)
 }
 
+func ParseVersionLocaleString(argument string) (string, string) {
+	version := ""
+	locale := "en-US"
+	if strings.Contains(argument, ":") {
+		r := regexp.MustCompile(`(.+):(.+)$`)
+		result := r.FindAllStringSubmatch(argument, -1)
+		version = result[0][1]
+		locale = result[0][2]
+	} else {
+		version = argument
+	}
+	return version, locale
+}
+
 func ParseProfileString(argument string) (string, string, string, string, error) {
 	message := "invalid profile argument, it must be firefox-VERSION@PROFILE or thunderbird-VERSION@PROFILE"
 	if !strings.Contains(argument, "-") {
