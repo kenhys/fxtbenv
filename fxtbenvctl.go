@@ -591,6 +591,41 @@ func removeAction(c *cli.Context, product string) {
 	}
 }
 
+func mirrorAction(c *cli.Context, product string) {
+	rootDir := ""
+	root := os.ExpandEnv(`${FXTBENV_MIRROR_ROOT}`)
+	if root != "" {
+		rootDir = root
+	}
+	root = c.String("root")
+	if root != "" {
+		rootDir = root
+	}
+	os.MkdirAll(rootDir, 0700)
+	// Fetch version list
+	locale := "en-US"
+	version := "57.0.4"
+	path := fmt.Sprintf("pub/%s/releases/%s/linux-x86_64/%s", strings.ToLower(product), version, locale)
+	filename := fmt.Sprintf("%s-%s.tar.bz2", strings.ToLower(product), version)
+	Info("Download to", filename)
+	source := fmt.Sprintf("https://ftp.mozilla.org/%s/%s", path, filename)
+	targetDir := filepath.Join(rootDir, path)
+	os.MkdirAll(targetDir, 0700)
+	destination := filepath.Join(targetDir, filename)
+	Debug("source", source)
+	pwd, _ := os.Getwd()
+	client := &getter.Client{
+		Src:  source,
+		Dst:  destination,
+		Pwd:  pwd,
+		Mode: getter.ClientModeFile,
+	}
+	if err := client.Get(); err != nil {
+		fmt.Println(err)
+	}
+}
+
+
 func main() {
 	app := cli.NewApp()
 	app.Name = "fxtbenv"
@@ -724,6 +759,39 @@ func main() {
 					},
 					Action: func(c *cli.Context) error {
 						removeAction(c, "Thunderbird")
+						return nil
+					},
+				},
+			},
+		},
+		{
+			Name:    "mirror",
+			Aliases: []string{"m"},
+			Usage:   "Mirror specific product",
+			Subcommands: []cli.Command{
+				{
+					Name:    "firefox",
+					Aliases: []string{"fx"},
+					Usage:   "Mirror Firefox",
+					Flags: []cli.Flag{
+						cli.BoolFlag{Name: "force, f"},
+						cli.StringFlag{Name: "root, r"},
+					},
+					Action: func(c *cli.Context) error {
+						mirrorAction(c, "Firefox")
+						return nil
+					},
+				},
+				{
+					Name:    "thunderbird",
+					Aliases: []string{"tb"},
+					Usage:   "Mirror Thunderbird",
+					Flags: []cli.Flag{
+						cli.BoolFlag{Name: "force, f"},
+						cli.StringFlag{Name: "root, r"},
+					},
+					Action: func(c *cli.Context) error {
+						mirrorAction(c, "Thunderbird")
 						return nil
 					},
 				},
