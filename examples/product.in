@@ -20,68 +20,68 @@ run___PRODUCT__ () {
     fi
 }
 
-if [ -f "$RCFILE" ]; then
-    line=$(\grep __PRODUCT__ $RCFILE)
-    if [ -n "$line" ]; then
-	product=$(echo $line | cut -d'-' -f1)
-	if [ "$product" = "__PRODUCT__" ]; then
-	    profile=$(echo $line | cut -d'-' -f2)
-	    verloc="${profile%@*}"
-	    version="${verloc%:*}"
-	    locale="${verloc#*:}"
-	    if [ -z "$locale" ]; then
-		locale = "en-US"
-	    fi
-	    command=$FXTBENV_HOME/__PRODUCT__/versions/$version/$locale/__PRODUCT__
-	    profver=$FXTBENV_HOME/__PRODUCT__/profiles/$profile
-	    run___PRODUCT__ $command $profver
-	else
-	    echo "Failed to parse configuration file: $RCFILE:"
-	fi
-    else
-	# fxenv or tbenv
-	if [ "__PRODUCT__" = "firefox" ]; then
-	    line=$(\grep fxenv $RCFILE)
-	    if [ -n "$line" ]; then
-		profile=$(echo $line | cut -d' ' -f3)
-		verloc="${profile%@*}"
-		version="${verloc%:*}"
-		locale="${verloc#*:}"
-		if [ -z "$locale" ]; then
-		    locale = "en-US"
-		fi
-		command=$FXTBENV_HOME/__PRODUCT__/versions/$version/$locale/__PRODUCT__
-		profver=$FXTBENV_HOME/__PRODUCT__/profiles/$profile
-		run___PRODUCT__ $command $profver
-	    fi
-	elif [ "__PRODUCT__" = "thunderbird" ]; then
-	    line=$(\grep tbenv $RCFILE)
-	    if [ -n "$line" ]; then
-		profile=$(echo $line | cut -d' ' -f3)
-		verloc="${profile%@*}"
-		version="${verloc%:*}"
-		locale="${verloc#*:}"
-		if [ -z "$locale" ]; then
-		    locale = "en-US"
-		fi
-		command=$FXTBENV_HOME/__PRODUCT__/versions/$version/$locale/__PRODUCT__
-		profver=$FXTBENV_HOME/__PRODUCT__/profiles/$profile
-		run___PRODUCT__ $command $profver
-	    fi
-	fi
+profile=$FXTBENV___CPRODUCT___PROFILE
+if [ -n "$profile" ]; then
+    verloc="${profile%@*}"
+    version="${verloc%:*}"
+    locale="${verloc#*:}"
+    if [ -z "$locale" ]; then
+	locale = "en-US"
     fi
+    command=$FXTBENV_HOME/__PRODUCT__/versions/$version/$locale/__PRODUCT__
+    profdir=$FXTBENV_HOME/__PRODUCT__/profiles/$profile
+    run___PRODUCT__ $command $profdir
 else
-    profile=$FXTBENV___CPRODUCT___PROFILE
-    if [ -n "$profile" ]; then
-	verloc="${profile%@*}"
-	version="${verloc%:*}"
-	locale="${verloc#*:}"
-	if [ -z "$locale" ]; then
-	    locale = "en-US"
+    if [ -f "$RCFILE" ]; then
+	line=$(\grep __PRODUCT__ $RCFILE)
+	if [ -n "$line" ]; then
+	    product=$(echo $line | cut -d'-' -f1)
+	    if [ "$product" = "__PRODUCT__" ]; then
+		profile=$(echo $line | cut -d'-' -f2)
+		verloc="${profile%@*}"
+		version="${verloc%:*}"
+		locale="${verloc#*:}"
+		if [ -z "$locale" ]; then
+		    locale = "en-US"
+		fi
+		command=$FXTBENV_HOME/__PRODUCT__/versions/$version/$locale/__PRODUCT__
+		profver=$FXTBENV_HOME/__PRODUCT__/profiles/$profile
+		run___PRODUCT__ $command $profver
+	    else
+		echo "Failed to parse configuration file: $RCFILE:"
+	    fi
+	else
+	    # fxenv or tbenv
+	    if [ "__PRODUCT__" = "firefox" ]; then
+		line=$(\grep fxenv $RCFILE)
+		if [ -n "$line" ]; then
+		    profile=$(echo $line | cut -d' ' -f3)
+		    verloc="${profile%@*}"
+		    version="${verloc%:*}"
+		    locale="${verloc#*:}"
+		    if [ -z "$locale" ]; then
+			locale = "en-US"
+		    fi
+		    command=$FXTBENV_HOME/__PRODUCT__/versions/$version/$locale/__PRODUCT__
+		    profver=$FXTBENV_HOME/__PRODUCT__/profiles/$profile
+		    run___PRODUCT__ $command $profver
+		fi
+	    elif [ "__PRODUCT__" = "thunderbird" ]; then
+		line=$(\grep tbenv $RCFILE)
+		if [ -n "$line" ]; then
+		    profile=$(echo $line | cut -d' ' -f3)
+		    verloc="${profile%@*}"
+		    version="${verloc%:*}"
+		    locale="${verloc#*:}"
+		    if [ -z "$locale" ]; then
+			locale = "en-US"
+		    fi
+		    command=$FXTBENV_HOME/__PRODUCT__/versions/$version/$locale/__PRODUCT__
+		    profver=$FXTBENV_HOME/__PRODUCT__/profiles/$profile
+		    run___PRODUCT__ $command $profver
+		fi
+	    fi
 	fi
-	command=$FXTBENV_HOME/__PRODUCT__/versions/$version/$locale/__PRODUCT__
-	profdir=$FXTBENV_HOME/__PRODUCT__/profiles/$profile
-	run___PRODUCT__ $command $profdir
     else
 	FALLBACK=1
     fi
