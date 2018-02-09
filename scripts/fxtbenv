@@ -82,7 +82,7 @@ fxenv () {
     export FXTBENV_PRODUCT=firefox
     command=$1
     case $command in
-	install|i|uninstall|un|list|l)
+	install|i|uninstall|un|list|l|remove|r)
 	    shift
 	    fxtbenv $command firefox $*
 	    ;;
