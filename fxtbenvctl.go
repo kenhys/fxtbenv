@@ -599,6 +599,30 @@ func removeAction(c *cli.Context, product string) {
 	}
 }
 
+func resetAction(c *cli.Context, product string) {
+	profileFlag := c.Bool("profile")
+	if profileFlag {
+		profile := ""
+		if product == "firefox" {
+			profile = os.ExpandEnv(`${FXTBENV_FIREFOX_PROFILE}`)
+			Info("Reset Firefox profile", profile)
+		} else if product == "thunderbird" {
+			profile = os.ExpandEnv(`${FXTBENV_THUNDERBIRD_PROFILE}`)
+			Info("Reset Thunderbird profile", profile)
+		} else {
+		}
+		targetDir := GetFxTbProfileDirectory(product, profile)
+		Info("Removing profile directory", targetDir)
+		if err := os.RemoveAll(targetDir); err != nil {
+			Warning(`Failed to remove ${targetDir}`)
+		}
+		Info("Creating profile directory", targetDir)
+		os.MkdirAll(targetDir, 0700)
+	} else {
+		// Reset installed product
+	}
+}
+
 func DownloadFile(source string, destination string) {
 	Debug("source", source)
 	Debug("destination", destination)
@@ -824,6 +848,37 @@ func main() {
 					},
 					Action: func(c *cli.Context) error {
 						mirrorAction(c, "Thunderbird")
+						return nil
+					},
+				},
+			},
+		},
+		{
+			Name:    "reset",
+			Aliases: []string{"m"},
+			Usage:   "Reset specific product",
+			Subcommands: []cli.Command{
+				{
+					Name:    "firefox",
+					Aliases: []string{"fx"},
+					Usage:   "Mirror Firefox",
+					Flags: []cli.Flag{
+						cli.BoolFlag{Name: "profile, p"},
+					},
+					Action: func(c *cli.Context) error {
+						resetAction(c, "firefox")
+						return nil
+					},
+				},
+				{
+					Name:    "thunderbird",
+					Aliases: []string{"tb"},
+					Usage:   "Mirror Thunderbird",
+					Flags: []cli.Flag{
+						cli.BoolFlag{Name: "profile, p"},
+					},
+					Action: func(c *cli.Context) error {
+						resetAction(c, "thunderbird")
 						return nil
 					},
 				},
