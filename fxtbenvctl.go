@@ -534,7 +534,7 @@ func useAction(c *cli.Context) {
 				Info("creating", profileDir)
 				os.MkdirAll(profileDir, 0700)
 			} else {
-				Warning("missing profile directory", c.Args()...)
+				Warning("Missing profile directory", profileDir)
 				os.Exit(1)
 			}
 		} else {
