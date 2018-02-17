@@ -24,6 +24,27 @@ $ source $HOME/.fxtbenv/scripts/fxtbenv.zsh
 
 ## Usage
 
+First, you need to install Firefox/Thunderbird. If you want to localized version, specify `VERSION:LOCALE`.
+
+To install Firefox 57.0.4 with Japanese edition, execute the following command.
+
+```
+% fxenv install 57.0.4:ja
+```
+
+Then, create prpfile for it. To use `test` profile, execute the following command.
+Note that `-c` option  must be specified only at first time because there is no profile yet.
+
+```
+% fxenv use 57.0.4:ja@test -c
+```
+
+Okay, now you are ready for it. Just launch Firefox.
+
+```
+% firefox
+```
+
 ## License
 
 MPL-2.0
