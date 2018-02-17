@@ -19,7 +19,7 @@ Need to switch multiple version of Firefox/Thunderbird for verifying difference 
 $ git clone https://github.com/kenhys/fxtbenv $HOME/.fxtbenv
 $ cd $HOME/.fxtbenv
 $ make
-$ source $HOME/.fxtbenv/scripts/fxtbenv
+$ source $HOME/.fxtbenv/scripts/fxtbenv.zsh
 ```
 
 ## Usage
