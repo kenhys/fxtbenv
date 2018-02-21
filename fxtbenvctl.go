@@ -563,18 +563,20 @@ func openAction(c *cli.Context) {
 }
 
 func installProductAction(c *cli.Context, product string) {
+	productName := strings.ToLower(product)
 	if c.Bool("list") {
-		ShowProductVersions(GetProductVersions(strings.ToLower(product)))
+		ShowProductVersions(GetProductVersions(productName))
 	}
 	if c.NArg() == 0 {
-		fmt.Println(fmt.Errorf("Specify ${product} version for install ${strings.ToLower(product)} subcommand:"))
+		message := fmt.Sprintf("Specify %s version for install %s subcommand", productName, productName)
+		fmt.Println(fmt.Errorf(message))
 		os.Exit(1)
 	}
 	if !IsInitialized() {
 		NewFxTbEnv()
 	}
-	InstallProduct(strings.ToLower(product), c.Args().First())
-	Info(`Install ${strings.ToLower(product)}:`, c.Args().First())
+	InstallProduct(productName, c.Args().First())
+	Info(fmt.Sprintf("Install %s", productName), c.Args().First())
 }
 
 func uninstallProductAction(c *cli.Context, product string) {
