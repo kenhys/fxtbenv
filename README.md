@@ -32,7 +32,7 @@ To install Firefox 57.0.4 with Japanese edition, execute the following command.
 % fxenv install 57.0.4:ja
 ```
 
-Then, create prpfile for it. To use `test` profile, execute the following command.
+Then, create profile for it. To use `test` profile, execute the following command.
 Note that `-c` option  must be specified only at first time because there is no profile yet.
 
 ```
