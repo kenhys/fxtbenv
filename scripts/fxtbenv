@@ -100,7 +100,7 @@ tbenv () {
     export FXTBENV_PRODUCT=thunderbird
     command=$1
     case $command in
-	install|i|uninstall|un|list|l)
+	install|i|uninstall|un|list|l|remove|r|reset)
 	    shift
 	    fxtbenv $command thunderbird $*
 	    ;;
