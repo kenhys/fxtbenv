@@ -426,10 +426,14 @@ func ParseProfileString(argument string) (string, string, string, string, error)
 	if !strings.Contains(argument, "-") {
 		return "", "", "", "", FxtbWErrorf(message, warn(argument))
 	}
-	arguments := strings.Split(argument, "-")
-	product := arguments[0]
-	// VERSION:LOCALE@PROFILE
-	profver := arguments[1]
+	product := ""
+	profver := ""
+	if strings.HasPrefix(argument, "firefox-") || strings.HasPrefix(argument, "thunderbird-") {
+		arguments := strings.SplitN(argument, "-", 2)
+		product = arguments[0]
+		// VERSION:LOCALE@PROFILE
+		profver = arguments[1]
+	}
 	if product != "firefox" && product != "thunderbird" {
 		return product, "", "", profver, FxtbWErrorf("invalid product name", fmt.Sprintf("%s-%s", warn(product), profver))
 	}
