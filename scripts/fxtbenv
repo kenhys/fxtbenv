@@ -104,6 +104,10 @@ tbenv () {
 	    shift
 	    fxtbenv $command thunderbird $*
 	    ;;
+	use)
+	    shift
+	    fxtbenv $command thunderbird-$*
+	    ;;
 	*)
 	    fxtbenv
 	    ;;
