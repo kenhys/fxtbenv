@@ -1,17 +1,10 @@
 language: go
 
 go:
+  - 1.7.x
   - 1.8.x
   - 1.9.x
   - master
-
-matrix:
-  include:
-    - go: 1.8.x
-    - go: 1.9.x
-    - go: master
-  allow_failures:
-    - go: 1.7.x
 
 before_install:
   - go get github.com/PuerkitoBio/goquery
