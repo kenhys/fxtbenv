@@ -11,7 +11,7 @@ Need to switch multiple version of Firefox/Thunderbird for verifying difference 
 
 ## Requirements
 
-* go 1.9.2 or later
+* go 1.8.7 or later
 
 ## How to Install fxtbenv
 
