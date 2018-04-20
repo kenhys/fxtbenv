@@ -758,6 +758,31 @@ func main() {
 			},
 		},
 		{
+			Name:    "upgrade",
+			Aliases: []string{"up"},
+			Usage:   "Upgrade Firefox/Thunderbird",
+			Subcommands: []cli.Command{
+				{
+					Name:    "firefox",
+					Aliases: []string{"fx"},
+					Usage:   "Upgrade Firefox",
+					Action: func(c *cli.Context) error {
+						upgradeProductAction(c, "Firefox")
+						return nil
+					},
+				},
+				{
+					Name:    "thunderbird",
+					Aliases: []string{"tb"},
+					Usage:   "Upgrade Thunderbird",
+					Action: func(c *cli.Context) error {
+						upgradeProductAction(c, "Thunderbird")
+						return nil
+					},
+				},
+			},
+		},
+		{
 			Name:    "list",
 			Aliases: []string{"l"},
 			Usage:   "List installed Firefox/Thunderbird",
