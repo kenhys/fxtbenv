@@ -599,6 +599,18 @@ func uninstallProductAction(c *cli.Context, product string) {
 	Info(`Uninstall ${strings.ToLower(product)}:`, c.Args().First())
 }
 
+func upgradeProductAction(c *cli.Context, product string) {
+	if c.NArg() != 2 {
+		Warning("Old version and New version must be specified")
+	}
+	previousVersion := c.Args().First()
+	nextVersion := c.Args().Get(1)
+	productName := strings.ToLower(product)
+	InstallProduct(productName, nextVersion)
+	UninstallProduct(productName, previousVersion)
+	Info(fmt.Sprintf("Upgrade %s:%s to %s", productName, previousVersion, nextVersion))
+}
+
 func removeAction(c *cli.Context, product string) {
 	profile := c.String("profile")
 	if profile != "" {
