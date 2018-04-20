@@ -349,6 +349,11 @@ func UninstallProduct(product string, version string) {
 	if err := os.RemoveAll(targetDir); err != nil {
 		fmt.Println(err)
 	}
+	homeDir := GetFxTbHomeDirectory()
+	versionDir := filepath.Join(homeDir, product, "versions", version)
+	if err := os.Remove(versionDir); err == nil {
+		Info(fmt.Sprintf("Cleanup %s", versionDir))
+	}
 }
 
 func ShowProfiles(products []string) {
