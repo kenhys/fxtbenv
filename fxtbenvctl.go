@@ -301,8 +301,8 @@ func InstallProduct(product string, version string) {
 	os.MkdirAll(filepath.Dir(productDir), 0700)
 	os.Rename(fmt.Sprintf("tmp/%s", product), productDir)
 
-	productVersion, _ := goversion.NewVersion(version)
-	version57, _ := goversion.NewVersion("57")
+	// productVersion, _ := goversion.NewVersion(version)
+	// version57, _ := goversion.NewVersion("57")
 	// if version != "nightly" && productVersion.LessThan(version57) {
 	// InstallDOMInspector(productDir, version)
 	// }
